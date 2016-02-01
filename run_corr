@@ -1,0 +1,7 @@
+hdfs dfs -rm -r -f hdfs://wolf.iems.northwestern.edu:8020/user/huser54/engagementprune
+wait
+/opt/cloudera/parcels/CDH/bin/spark-submit corr_hdfs.py 
+wait
+#hdfs dfs -getmerge hdfs://wolf.iems.northwestern.edu:8020/user/huser54/engagementprune results.txt
+wait
+echo "success"

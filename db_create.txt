@@ -1,0 +1,27 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Tue Oct 28 20:48:16 2014
+
+@author: leoliu
+"""
+
+CREATE TABLE engagement.engagement_s1(
+    x int,
+    y int,
+    z int,
+    time int,
+    data int,
+    PRIMARY KEY (x,y,z,time)
+)
+WITH comment='engagement_s1'
+AND read_repair_chance = 1.0;
+
+
+
+// example insertion file. 
+INSERT INTO engagement.engagement_s1(
+x,y,z,time,data
+)
+values (
+1,1,1,1,1
+)

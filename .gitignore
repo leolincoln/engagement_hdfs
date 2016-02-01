@@ -1,0 +1,7 @@
+*.dat
+*.zip
+*.png
+#compiled python file
+*.pyc
+#data file
+*.mat
