@@ -45,21 +45,24 @@ def dft_y(x):
     result = np.fft.fft(x)
     return np.abs(result)
 
-def dft_worker(f,data,subject,file_name):
+def subject_worker(f,data,subject,d,lock):
     '''
     Args: 
         f: the real data, from which you need references to extract data using "data"
         data: reference data, in 5 dimensions: s,t,x,y,z
             where s subject, t time, x,y,z are 3 dimensional points
         subject: integer
-        file_name: a string that we want to write in. e.g "subject0.dat"
+        d: the global dictionary that we want to write to
+        lock: a RLock object from threading, incase the x,y,z pair has not been initialized
     Returns: 
         None. 
     File: 
         normalized DFT output for subjects. 
     '''
     print 'dft_worker for',subject,'started',time.time()
-    newfile = open(file_name,'a')
+    
+    #new file begins, commenting out because we will not use it
+    #newfile = open(file_name,'a')
     data2 = np.array(f[data[subject][0]])
     start_time2 = time.time();
     '''
@@ -78,68 +81,32 @@ def dft_worker(f,data,subject,file_name):
     for z in xrange(len(data2[0][0][0])):
         for y in xrange(len(data2[0][0])):
             for x in xrange(len(data2[0])):
+                xyz_key = str(x)+'_'+str(y)+'_'+str(z)
+                if xyz_key not in d.keys():
+                    lock.acquire()
+                    try:
+                        d[xyz_key]={}
+                    finally:
+                        lock.release()
+                #now the lock is released, and we should have xyz_key in our global d dictionary
                 timeSeries = [data2[t][x][y][z] for t in xrange(len(data2))]
                 timeSeries = np.array(timeSeries).astype(float)
                 timeSeries = norm_nodevide(timeSeries)
+                d[xyz_key][subject] = timeSeries
+                #comment out the dft transform code as we will not use it
                 #timeSeries = dft_y(timeSeries)
-                line = ';'.join([str(x),str(y),str(z),','.join([str(item) for item in timeSeries])])
-                newfile.write(line+'\n')
-    newfile.close()
+                
+                #comment out the line code as we will not be writing to subject file directly
+                #line = ';'.join([str(x),str(y),str(z),','.join([str(item) for item in timeSeries])])
+                #newfile.write(line+'\n')
+    #new file ends. Commenting out because we will not use it
+    #newfile.close()
     print("--- run time for subject: %s seconds ---" % str(time.time() - start_time2))
 
-def dft_worker2(f,datas,x,y,z,file_name=None,data_folder = None):
-    '''
-    Args: 
-        f: the real data, from which you need references to extract data using "data"
-        data2: reference datas, array of data in 5 dimensions: s,t,x,y,z here we will have 22 data. 
-            where s subject, t time, x,y,z are 3 dimensional points
-        x: integer of x
-        y: integer of y
-        z: integer of z
-        file_name: a string that we want to write in. e.g "1_1_1.dat" 
-    Returns: 
-        None. 
-    File: 
-        normalized DFT output for subjects. 
-    '''
-    if file_name is None:
-        file_name = str(x)+'_'+str(y)+'_'+str(z)+'.dat'
-    if data_folder is None:
-        data_folder = './'
-    else if data_folder[-1]!='/':
-        data_folder+='/'
-    print 'dft_worker for',x,y,z,'started',time.time()
-    try:
-        os.remove(data_folder+file_name)
-    except:
-        print 'no file found. Program continues '+data_folder+file_name 
-    newfile = open(data_folder+file_name,'a')
-    data2 = np.array(f[data[subject][0]])
-    start_time2 = time.time();
-    '''
-    When you read pieman.mat from matlab, you will get a 58x40x46x274 datc.
-
-    58 --> Z. from lower to top
-    40 --> Y, from front to back
-    46 --> X, from left to right.
-    274 --> time, from lower time to higher time
-    for hitchcockdatat*, you will get 601 x 47 x 41 x 59 data references.
-    time -- x -- y -- z
-    22 subjects for hitchcockdata
-    '''
-
-                timeSeries = [data2[t][x][y][z] for t in xrange(len(data2))]
-                timeSeries = np.array(timeSeries).astype(float)
-                timeSeries = norm_nodevide(timeSeries)
-                #timeSeries = dft_y(timeSeries)
-                line = ';'.join([str(x),str(y),str(z),','.join([str(item) for item in timeSeries])])
-                newfile.write(line+'\n')
-    newfile.close()
-    print("--- run time for subject: %s seconds ---" % str(time.time() - start_time2))
 
 def main():
     start_time = time.time();
-
+    lock = threading.RLock()
     fileNames = ['HitchcockData.mat']
     for fileName in fileNames:
         try:
@@ -147,15 +114,22 @@ def main():
         except:
             sys.exit('not found file '+fileName+':  exiting')
     threads = []
-
+    #this result_dict should be a giant dictionary of the form
+    #key -- x,y,z
+    #value -- dictionary2 
+    #dictionary2:
+    #key: subject number
+    #value: array of time series
+    #Warning: This is a expoitation of the GIL global interpreter lock. If you are not using cython then problem might occur.
+    #the only lock that I deployed here are at the time when creating a new dictionary2 inside the original dictionary
+    result_dict = {}
     for subject in xrange(len(data)):
         newfileName = fileName[:-4]+str(subject)+'.dat'
-        t = threading.Thread(target=dft_worker, args=(f,data,subject,newfileName))
+        t = threading.Thread(target=dft_worker, args=(f,data,subject,newfileName,lock))
         threads.append(t)
         t.start()
     print("--- total run time: %s seconds ---" % str(time.time() - start_time))
 
-def main2():
     '''
     Purpose of this main: 
     Hoepfully I will be focused on building a dictinoary of standardized data. 
@@ -167,25 +141,3 @@ def main2():
     Reduce time by this structure? I think not. 
     Now that I think about it. I should have used the old format. Garenteed to work lol. Okay got it. 
     '''
-    data_folder = 'data/'
-    start_time = time.time()
-    fileNames = ['HitchcockData.mat']
-    for fileName in fileNames:
-        try:
-            f,data = readMat2(fileName)
-        except:
-            sys.exit('not found file '+fileName+' ;exiting')
-    #f[data[subject][0]] gives the actual subject data. 
-    #this wierld structure is what saved memory i guess
-    datas = []
-    for subject in xrange(len(data)):
-        datas.append(f[data[subject][0]]
-    data2 = datas[0]
-    threads = []
-    for x in xrange(len(data2[0])):
-        for y in xrange(len(data2[0][0]):
-            for z in xrange(len(data2[0][0][0]):
-                t = threading.Thread(target=dft_worker2,args=(f,datas,x,y,z,data_folder))
-                threads.append(t)
-                t.start()
-    print("--- total run time: %s seconds ---" % str(time.time() - start_time))
