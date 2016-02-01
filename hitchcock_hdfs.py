@@ -89,6 +89,50 @@ def dft_worker(f,data,subject,file_name):
     newfile.close()
     print("--- run time for subject: %s seconds ---" % str(time.time() - start_time2))
 
+def dft_worker2(f,data2,x,y,z,file_name=None):
+    '''
+    Args: 
+        f: the real data, from which you need references to extract data using "data"
+        data: reference data, in 5 dimensions: s,t,x,y,z
+            where s subject, t time, x,y,z are 3 dimensional points
+        subject: integer
+        file_name: a string that we want to write in. e.g "subject0.dat"
+    Returns: 
+        None. 
+    File: 
+        normalized DFT output for subjects. 
+    '''
+    if file_name is None:
+        file_name = str(x)+'_'+str(y)+'_'+str(z)+'.dat'
+    print 'dft_worker for',subject,'started',time.time()
+    newfile = open(file_name,'a')
+    data2 = np.array(f[data[subject][0]])
+    start_time2 = time.time();
+    '''
+    When you read pieman.mat from matlab, you will get a 58x40x46x274 datc.
+
+    58 --> Z. from lower to top
+    40 --> Y, from front to back
+    46 --> X, from left to right.
+    274 --> time, from lower time to higher time
+    for hitchcockdatat*, you will get 601 x 47 x 41 x 59 data references.
+    time -- x -- y -- z
+    22 subjects for hitchcockdatao
+
+    '''
+
+    for z in xrange(len(data2[0][0][0])):
+        for y in xrange(len(data2[0][0])):
+            for x in xrange(len(data2[0])):
+                timeSeries = [data2[t][x][y][z] for t in xrange(len(data2))]
+                timeSeries = np.array(timeSeries).astype(float)
+                timeSeries = norm_nodevide(timeSeries)
+                #timeSeries = dft_y(timeSeries)
+                line = ';'.join([str(x),str(y),str(z),','.join([str(item) for item in timeSeries])])
+                newfile.write(line+'\n')
+    newfile.close()
+    print("--- run time for subject: %s seconds ---" % str(time.time() - start_time2))
+
 start_time = time.time();
 
 fileNames = ['HitchcockData.mat']
