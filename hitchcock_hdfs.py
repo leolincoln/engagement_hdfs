@@ -93,10 +93,12 @@ def dft_worker2(f,data2,x,y,z,file_name=None):
     '''
     Args: 
         f: the real data, from which you need references to extract data using "data"
-        data: reference data, in 5 dimensions: s,t,x,y,z
+        data2: reference data, in 5 dimensions: s,t,x,y,z
             where s subject, t time, x,y,z are 3 dimensional points
-        subject: integer
-        file_name: a string that we want to write in. e.g "subject0.dat"
+        x: integer of x
+        y: integer of y
+        z: integer of z
+        file_name: a string that we want to write in. e.g "1_1_1.dat" 
     Returns: 
         None. 
     File: 
