@@ -100,7 +100,7 @@ def main():
     threads = []
 
     for subject in xrange(len(data)):
-        newfileName = fileName[:-4]+str(subject)+'.dat'
+        newfileName = fileName[:-4]+str(subject)+'sample.dat'
         t = threading.Thread(target=dft_worker, args=(f,data,subject,newfileName))
         threads.append(t)
         t.start()
