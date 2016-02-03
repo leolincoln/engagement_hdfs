@@ -169,7 +169,8 @@ def main():
         f.write(key)
         f.write(';')
         for subject in sorted(result_dict[key].keys()):
-            f.write(','.join(result_dict[key][subject]))
+            f.write(','.join(map(str,result_dict[key][subject])))
+    
             f.write(',')
         f.write('\n')
     f.close()
