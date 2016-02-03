@@ -103,6 +103,32 @@ def subject_worker(f,data,subject,d,lock):
     #newfile.close()
     print("--- run time for subject: %s seconds ---" % str(time.time() - start_time2))
 
+def find_max(result,subject):
+    max_value = 0.0
+    for xyz in result.keys():
+        temp = float(max(result[xyz][subject]))
+        if temp>max_value:
+            max_value = temp
+    return max_value
+
+def find_min(result,subject):
+    min_value = 0.0
+    for xyz in result.keys():
+        temp = float(min(result[xyz][subject]))
+        if temp<min_value:
+            min_value = temp
+    return min_value
+
+
+def normalize_columns(result_dict):
+    xyzs = result_dict.keys()
+    for subject in range(result_dict[xyzs[0]]):
+        max_num = find_max(result_dict,subject)
+        min_num = find_min(result_dict,subject)
+        for xyz in xyzs:
+            temp = np.array(result_dict[xyz][subject])
+            result_dict[xyz][subject] = (temp-min_num)/(max_num-min_num)
+    return result_dict
 
 def main():
     start_time = time.time();
@@ -125,9 +151,14 @@ def main():
     result_dict = {}
     for subject in xrange(len(data)):
         newfileName = fileName[:-4]+str(subject)+'.dat'
-        t = threading.Thread(target=dft_worker, args=(f,data,subject,newfileName,lock))
+        t = threading.Thread(target=subject_worker, args=(f,data,subject,result_dict,lock))
         threads.append(t)
         t.start()
+
+    #so now assume all threads finished running:
+    #we have a dictionary of the described one
+    #now we need to normalize it based on person
+    result_dict = normalize_columns(result_dict)
     print("--- total run time: %s seconds ---" % str(time.time() - start_time))
 
     '''
