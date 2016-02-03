@@ -184,3 +184,6 @@ def main():
     Reduce time by this structure? I think not. 
     Now that I think about it. I should have used the old format. Garenteed to work lol. Okay got it. 
     '''
+
+if __name__=='__main__':
+    main()
