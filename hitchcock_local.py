@@ -54,7 +54,6 @@ def subject_worker(f,data,subject,d,lock=None):
             where s subject, t time, x,y,z are 3 dimensional points
         subject: integer
         d: the global dictionary that we want to write to
-        lock: a RLock object from threading, incase the x,y,z pair has not been initialized
     Returns: 
         None. 
     File: 
@@ -121,7 +120,6 @@ def find_min(result,subject):
             min_value = temp
     return min_value
 
-
 def normalize_columns(result_dict):
     xyzs = result_dict.keys()
     for subject in range(result_dict[xyzs[0]]):
@@ -149,16 +147,17 @@ def main():
     #value: array of time series
     #Warning: This is a expoitation of the GIL global interpreter lock. If you are not using cython then problem might occur.
     #the only lock that I deployed here are at the time when creating a new dictionary2 inside the original dictionary
-    manager = Manager()
-    result_dict = manager.dict()
+    #manager = Manager()
+    #result_dict = manager.dict()
     for subject in xrange(len(data)):
-        newfileName = fileName[:-4]+str(subject)+'.dat'
+        #newfileName = fileName[:-4]+str(subject)+'.dat'
         p = Process(target=subject_worker, args=(f,data,subject,result_dict))
-        processes.append(p)
-        p.start()
+        subject_worker(f,data,subject,result_dict)
+        #processes.append(p)
+        #p.start()
     # Wait for all of them to finish
-    for x in processes:
-        x.join()
+    #for x in processes:
+    #    x.join()
     #so now assume all threads finished running:
     #we have a dictionary of the described one
     #now we need to normalize it based on person
