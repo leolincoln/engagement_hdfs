@@ -122,7 +122,7 @@ def find_min(result,subject):
 
 def normalize_columns(result_dict):
     xyzs = result_dict.keys()
-    for subject in range(result_dict[xyzs[0]]):
+    for subject in range(len(result_dict[xyzs[0]])):
         max_num = find_max(result_dict,subject)
         min_num = find_min(result_dict,subject)
         for xyz in xyzs:
