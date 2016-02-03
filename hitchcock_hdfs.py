@@ -82,7 +82,7 @@ def dft_worker(f,data,subject,file_name):
                 timeSeries = np.array(timeSeries).astype(float)
                 timeSeries = norm_nodevide(timeSeries)
                 #timeSeries = dft_y(timeSeries)
-                line = ';'.join([str(x),str(y),str(z),','.join([str(item) for item in timeSeries])])
+                line = ';'.join([str(x),str(y),str(z),str(subject),','.join([str(item) for item in timeSeries])])
                 newfile.write(line+'\n')
     newfile.close()
     print("--- run time for subject: %s seconds ---" % str(time.time() - start_time2))
@@ -105,3 +105,7 @@ def main():
         threads.append(t)
         t.start()
     print("--- total run time: %s seconds ---" % str(time.time() - start_time))
+
+
+if __name__ == '__main__':
+    main()
