@@ -125,6 +125,8 @@ def normalize_columns(result_dict):
     for subject in range(len(result_dict[xyzs[0]])):
         max_num = find_max(result_dict,subject)
         min_num = find_min(result_dict,subject)
+        if max_num - min_num == 0:
+            continue
         for xyz in xyzs:
             temp = np.array(result_dict[xyz][subject])
             result_dict[xyz][subject] = (temp-min_num)/(max_num-min_num)
