@@ -8,7 +8,8 @@ Created on Sun Nov 09 14:11:45 2014
 from io_routines import readMat2
 #from db_utilities import prepareInsert,prepareCreateTable,getSession
 import numpy as np
-import sys,time,os,threading
+import sys,time,os
+from multiprocessing import Process, Manager
 def norm_nodevide(x):
     '''
     1. normalize the series in numpy array float64 format
@@ -45,7 +46,7 @@ def dft_y(x):
     result = np.fft.fft(x)
     return np.abs(result)
 
-def subject_worker(f,data,subject,d,lock):
+def subject_worker(f,data,subject,d,lock=None):
     '''
     Args: 
         f: the real data, from which you need references to extract data using "data"
@@ -77,17 +78,18 @@ def subject_worker(f,data,subject,d,lock):
     22 subjects for hitchcockdatao
 
     '''
-
+    for z in xrange(5):
+        for y in xrange(5):
+            for x in xrange(5):
+    '''
     for z in xrange(len(data2[0][0][0])):
         for y in xrange(len(data2[0][0])):
             for x in xrange(len(data2[0])):
+    '''
                 xyz_key = str(x)+'_'+str(y)+'_'+str(z)
                 if xyz_key not in d.keys():
-                    lock.acquire()
-                    try:
-                        d[xyz_key]={}
-                    finally:
-                        lock.release()
+                    #TODO: there might be problem here. It might need manager
+                    d[xyz_key]={}
                 #now the lock is released, and we should have xyz_key in our global d dictionary
                 timeSeries = [data2[t][x][y][z] for t in xrange(len(data2))]
                 timeSeries = np.array(timeSeries).astype(float)
@@ -132,14 +134,13 @@ def normalize_columns(result_dict):
 
 def main():
     start_time = time.time();
-    lock = threading.RLock()
     fileNames = ['HitchcockData.mat']
     for fileName in fileNames:
         try:
             f,data = readMat2(fileName)
         except:
             sys.exit('not found file '+fileName+':  exiting')
-    threads = []
+    processes = []
     #this result_dict should be a giant dictionary of the form
     #key -- x,y,z
     #value -- dictionary2 
@@ -148,19 +149,29 @@ def main():
     #value: array of time series
     #Warning: This is a expoitation of the GIL global interpreter lock. If you are not using cython then problem might occur.
     #the only lock that I deployed here are at the time when creating a new dictionary2 inside the original dictionary
-    result_dict = {}
+    manager = Manager()
+    result_dict = manager.dict()
     for subject in xrange(len(data)):
         newfileName = fileName[:-4]+str(subject)+'.dat'
-        t = threading.Thread(target=subject_worker, args=(f,data,subject,result_dict,lock))
-        threads.append(t)
-        t.start()
-
+        p = Process(target=subject_worker, args=(f,data,subject,result_dict))
+        processes.append(t)
+        p.start()
+    # Wait for all of them to finish
+    for x in processes:
+        x.join()
     #so now assume all threads finished running:
     #we have a dictionary of the described one
     #now we need to normalize it based on person
     result_dict = normalize_columns(result_dict)
     print("--- total run time: %s seconds ---" % str(time.time() - start_time))
-
+    f = open('result.dat','w')
+    for key in result_dict.keys():
+        f.write(key)
+        f.write(';')
+        for subject in sorted(result_dict[key].keys()):
+            f.write(','.join(result_dict[key][subject]))
+            f.write(',')
+        f.write('\n')
     '''
     Purpose of this main: 
     Hoepfully I will be focused on building a dictinoary of standardized data. 
