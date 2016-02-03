@@ -149,6 +149,7 @@ def main():
     #the only lock that I deployed here are at the time when creating a new dictionary2 inside the original dictionary
     #manager = Manager()
     #result_dict = manager.dict()
+    result_dict = {}
     for subject in xrange(len(data)):
         #newfileName = fileName[:-4]+str(subject)+'.dat'
         #p = Process(target=subject_worker, args=(f,data,subject,result_dict))
