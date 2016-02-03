@@ -151,7 +151,7 @@ def main():
     #result_dict = manager.dict()
     for subject in xrange(len(data)):
         #newfileName = fileName[:-4]+str(subject)+'.dat'
-        p = Process(target=subject_worker, args=(f,data,subject,result_dict))
+        #p = Process(target=subject_worker, args=(f,data,subject,result_dict))
         subject_worker(f,data,subject,result_dict)
         #processes.append(p)
         #p.start()
