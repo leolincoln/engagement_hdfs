@@ -172,6 +172,7 @@ def main():
             f.write(','.join(result_dict[key][subject]))
             f.write(',')
         f.write('\n')
+    f.close()
     '''
     Purpose of this main: 
     Hoepfully I will be focused on building a dictinoary of standardized data. 
