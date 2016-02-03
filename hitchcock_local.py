@@ -81,11 +81,11 @@ def subject_worker(f,data,subject,d,lock=None):
     for z in xrange(5):
         for y in xrange(5):
             for x in xrange(5):
-    '''
+                '''
     for z in xrange(len(data2[0][0][0])):
         for y in xrange(len(data2[0][0])):
             for x in xrange(len(data2[0])):
-    '''
+                '''
                 xyz_key = str(x)+'_'+str(y)+'_'+str(z)
                 if xyz_key not in d.keys():
                     #TODO: there might be problem here. It might need manager
