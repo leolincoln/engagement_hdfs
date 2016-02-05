@@ -101,7 +101,14 @@ WSSSE = parsedData.map(lambda point: error(point)).reduce(lambda x, y: x + y)
 print 'wssse obtain time:',time.time()-time_now
 time_now = time.time()
 print("Within Set Sum of Squared Error = " + str(WSSSE))
+
+#cluter centers after calculating kmeans clustering
 clusterCenters = sc.parallelize(clusters.clusterCenters)
+
+print 'clearing hdfs system'
+os.system('hdfs dfs -rm -r -f '+hdfsPrefix+'clusterCenters')
+
+#save as text file to clusterCenters in hdfs
 clusterCenters.saveAsTextFile(hdfsPrefix+'clusterCenters')
 print 'save cluster center',time.time()-time_now
 
