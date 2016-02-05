@@ -16,7 +16,4 @@ export HADOOP_CONF_DIR=/etc/alternatives/hadoop-conf
 --executor-memory 7g \
 --master yarn \
 --deploy-mode client \
---num-executors 4 \
---executor-cores 8 \
---executor-memory 7g \
 $1 $2 $3
