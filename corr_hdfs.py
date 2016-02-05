@@ -31,7 +31,7 @@ def xyz_group(xyz1,xyz2):
     full.update(xyz2)
     return full
 
-def  print_rdd(rdd):
+def print_rdd(rdd):
     for x in rdd.collect():
         print x
 def count_rdd(rdd):
@@ -52,6 +52,7 @@ def get_eud(values):
 def filter_0(line):
     array = [float(item) for item in line.split(';')[3]]
     return sum(array)!=0
+
 time_now = time.time()
 sc = SparkContext()
 hdfsPrefix = 'hdfs://wolf.iems.northwestern.edu/user/huser54/'
@@ -64,6 +65,7 @@ print 'values obtained'
 print values.first()
 print 'value obtain time:',time.time()-time_now
 time_now = time.time()
+
 #group by key. Using reduce. Because groupby is not recommended in spark documentation
 groups = values.reduceByKey(xyz_group)
 print 'groups finished'
