@@ -52,6 +52,7 @@ def get_eud(values):
 def filter_0(line):
     array = [float(item) for item in line.split(';')[3]]
     return sum(array)!=0
+time_now = time.time()
 sc = SparkContext()
 hdfsPrefix = 'hdfs://wolf.iems.northwestern.edu/user/huser54/'
 #fileName1 = 'engagement/HitchcockData0.dat'
@@ -61,25 +62,35 @@ lines = sc.textFile(hdfsPrefix+fileName2)
 values = lines.map(value_pairs)
 print 'values obtained'
 print values.first()
-
+print 'value obtain time:',time.time()-time_now
+time_now = time.time()
 #group by key. Using reduce. Because groupby is not recommended in spark documentation
 groups = values.reduceByKey(xyz_group)
 print 'groups finished'
 print groups.first()
-
+print 'group obtain time:',time.time()-time_now
+time_now = time.time()
 
 #map the groups to xyz -> array, where array is 0-22 subject points. 
 feature_groups = groups.map(xyz_feature)
 print 'feature group'
 print feature_groups.first()
+print 'feature obtain time:',time.time()-time_now
+time_now = time.time()
 
 parsedData = feature_groups.map(lambda x:x[1])
 print 'parsed data'
 print parsedData.first()
+print 'parsed data obtain time:',time.time()-time_now
+time_now = time.time()
 #now we have xyz -> group of features
 #and we are ready to cluster. 
 # Build the model (cluster the data)
-clusters = KMeans.train(parsedData, 100, maxIterations=10,runs=10, initializationMode="random")
+#document states:
+#classmethod train(rdd, k, maxIterations=100, runs=1, initializationMode='k-means||', seed=None, initializationSteps=5, epsilon=0.0001,initialModel=None)
+clusters = KMeans.train(parsedData, 1000, maxIterations=1000,runs=100, initializationMode="random")
+print 'cluster obtain time:',time.time()-time_now
+time_now = time.time()
 
 # Evaluate clustering by computing Within Set Sum of Squared Errors
 def error(point):
@@ -87,8 +98,12 @@ def error(point):
     return sqrt(sum([x**2 for x in (point - center)]))
 
 WSSSE = parsedData.map(lambda point: error(point)).reduce(lambda x, y: x + y)
+print 'wssse obtain time:',time.time()-time_now
+time_now = time.time()
 print("Within Set Sum of Squared Error = " + str(WSSSE))
-
+clusterCenters = sc.parallelize(clusters.clusterCenters)
+clusterCenters.saveAsTextFile(hdfsPrefix+'clusterCenters')
+print 'save cluster center',time.time()-time_now
 
 '''
 cart_value_pairs = values.cartesian(values)
