@@ -90,7 +90,7 @@ time_now = time.time()
 # Build the model (cluster the data)
 #document states:
 #classmethod train(rdd, k, maxIterations=100, runs=1, initializationMode='k-means||', seed=None, initializationSteps=5, epsilon=0.0001,initialModel=None)
-clusters = KMeans.train(parsedData, 1000, maxIterations=1000,runs=100, initializationMode="random")
+clusters = KMeans.train(parsedData, 1000, maxIterations=100,runs=10, initializationMode="random")
 print 'cluster obtain time:',time.time()-time_now
 time_now = time.time()
 
