@@ -56,41 +56,41 @@ def filter_0(line):
 time_now = time.time()
 sc = SparkContext()
 hdfsPrefix = 'hdfs://wolf.iems.northwestern.edu/user/huser54/'
-#fileName1 = 'engagement/HitchcockData0.dat'
+fileName1 = 'engagement/'
 fileName2 = 'engagementsample/'
-lines = sc.textFile(hdfsPrefix+fileName2)
+lines = sc.textFile(hdfsPrefix+fileName1)
 #map the values to xyz string -> dictionary of subjects with time series. 
 values = lines.map(value_pairs)
 print 'values obtained'
-print values.first()
-print 'value obtain time:',time.time()-time_now
+#print values.first()
+#print 'value obtain time:',time.time()-time_now
 time_now = time.time()
 
 #group by key. Using reduce. Because groupby is not recommended in spark documentation
 groups = values.reduceByKey(xyz_group)
 print 'groups finished'
-print groups.first()
-print 'group obtain time:',time.time()-time_now
+#print groups.first()
+#print 'group obtain time:',time.time()-time_now
 time_now = time.time()
 
 #map the groups to xyz -> array, where array is 0-22 subject points. 
 feature_groups = groups.map(xyz_feature)
 print 'feature group'
-print feature_groups.first()
-print 'feature obtain time:',time.time()-time_now
+#print feature_groups.first()
+#print 'feature obtain time:',time.time()-time_now
 time_now = time.time()
 
 parsedData = feature_groups.map(lambda x:x[1])
 print 'parsed data'
-print parsedData.first()
-print 'parsed data obtain time:',time.time()-time_now
+#print parsedData.first()
+#print 'parsed data obtain time:',time.time()-time_now
 time_now = time.time()
 #now we have xyz -> group of features
 #and we are ready to cluster. 
 # Build the model (cluster the data)
 #document states:
 #classmethod train(rdd, k, maxIterations=100, runs=1, initializationMode='k-means||', seed=None, initializationSteps=5, epsilon=0.0001,initialModel=None)
-clusters = KMeans.train(parsedData, 10, maxIterations=100,runs=10, initializationMode="random")
+clusters = KMeans.train(parsedData, 500, maxIterations=100,runs=10, initializationMode="k-means||")
 print 'cluster obtain time:',time.time()-time_now
 time_now = time.time()
 

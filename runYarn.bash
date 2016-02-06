@@ -9,7 +9,7 @@ fi
 #    echo "Usage: ./runYarn.bash fileName"
 #    exit
 #fi
-
+#--num-executors 4 \
 export HADOOP_CONF_DIR=/etc/alternatives/hadoop-conf 
 /opt/cloudera/parcels/CDH/bin/spark-submit \
 --executor-cores 8 \
