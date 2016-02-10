@@ -64,7 +64,7 @@ values = lines.map(value_pairs)
 print 'values obtained'
 #print values.first()
 #print 'value obtain time:',time.time()-time_now
-time_now = time.time()
+time_old = time.time()
 
 #group by key. Using reduce. Because groupby is not recommended in spark documentation
 groups = values.reduceByKey(xyz_group)
@@ -90,7 +90,7 @@ time_now = time.time()
 # Build the model (cluster the data)
 #document states:
 #classmethod train(rdd, k, maxIterations=100, runs=1, initializationMode='k-means||', seed=None, initializationSteps=5, epsilon=0.0001,initialModel=None)
-clusters = KMeans.train(parsedData, 500, maxIterations=100,runs=10, initializationMode="k-means||")
+clusters = KMeans.train(parsedData, 700, maxIterations=100,runs=10, initializationMode="k-means||")
 print 'cluster obtain time:',time.time()-time_now
 time_now = time.time()
 
@@ -100,9 +100,7 @@ def error(point):
     return sqrt(sum([x**2 for x in (point - center)]))
 
 WSSSE = parsedData.map(lambda point: error(point)).reduce(lambda x, y: x + y)
-print 'wssse obtain time:',time.time()-time_now
 time_now = time.time()
-print("Within Set Sum of Squared Error = " + str(WSSSE))
 
 #cluter centers after calculating kmeans clustering
 clusterCenters = sc.parallelize(clusters.clusterCenters)
@@ -114,6 +112,8 @@ os.system('hdfs dfs -rm -r -f '+hdfsPrefix+'clusterCenters')
 clusterCenters.saveAsTextFile(hdfsPrefix+'clusterCenters')
 print 'save cluster center',time.time()-time_now
 
+print 'wssse obtain time:',time.time()-time_old
+print("Within Set Sum of Squared Error = " + str(WSSSE))
 '''
 cart_value_pairs = values.cartesian(values)
 cart_value_pairs.repartition(100)
