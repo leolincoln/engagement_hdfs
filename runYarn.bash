@@ -11,10 +11,10 @@ fi
 #    exit
 #fi
 #--num-executors 4 \
+#--master yarn \
+#--deploy-mode client \
 export HADOOP_CONF_DIR=/etc/alternatives/hadoop-conf 
 /opt/cloudera/parcels/spark-1.4.0-bin-cdh4/bin/spark-submit \
 --executor-cores 8 \
 --executor-memory 7g \
---master yarn \
---deploy-mode client \
 $1 $2 $3
