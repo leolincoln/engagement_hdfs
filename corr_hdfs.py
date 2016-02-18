@@ -4,6 +4,7 @@ import numpy as np
 from pyspark.mllib.clustering import KMeans, KMeansModel
 from numpy import array
 from math import sqrt
+import pickle
 def xyz_feature(xyz_value):
     xyz_key = xyz_value[0]
     xyz_dict = xyz_value[1]
@@ -25,9 +26,9 @@ def value_pairs(line):
     z = values[2]
     subject = values[3]
     timeseries = values[4]
-    return ((x,y,z),{y:timeseries})
+    return ((x,y,z),{subject:timeseries})
 def xyz_group(xyz1,xyz2):
-    full = xyz1.copy()
+    full = xyz1
     full.update(xyz2)
     return full
 
@@ -100,16 +101,25 @@ def error(point):
     return sqrt(sum([x**2 for x in (point - center)]))
 
 WSSSE = parsedData.map(lambda point: error(point)).reduce(lambda x, y: x + y)
+with open('WSSE.dat','w') as f:
+    f.write(str(WSSSE))
+
 time_now = time.time()
 
 #cluter centers after calculating kmeans clustering
-clusterCenters = sc.parallelize(clusters.clusterCenters)
+#clusterCenters = sc.parallelize(clusters.clusterCenters)
 
 print 'clearing hdfs system'
 os.system('hdfs dfs -rm -r -f '+hdfsPrefix+'clusterCenters')
-
+cluster_ind = parsedData.map(lambda point:clusters.predict(point))
+cluster_ind.collect()
+cluster_sizes = cluster_ind.countByValue().items()
+#remove cluster size and center data
+os.system('rm cluster_sizes.dat')
+os.system('rm cluster_centers.dat')
+pickle.dump(list(cluster_sizes),open('cluster_sizes.dat','w'))
+pickle.dump(clusters.centers,open('cluster_centers.dat','w'))
 #save as text file to clusterCenters in hdfs
-clusterCenters.saveAsTextFile(hdfsPrefix+'clusterCenters')
 print 'save cluster center',time.time()-time_now
 
 print 'wssse obtain time:',time.time()-time_old
