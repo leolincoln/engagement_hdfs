@@ -115,8 +115,8 @@ cluster_ind = parsedData.map(lambda point:clusters.predict(point))
 cluster_ind.collect()
 cluster_sizes = cluster_ind.countByValue().items()
 #remove cluster size and center data
-os.system('rm cluster_sizes.dat')
-os.system('rm cluster_centers.dat')
+os.system('rm -rf cluster_sizes.dat')
+os.system('rm -rf cluster_centers.dat')
 pickle.dump(list(cluster_sizes),open('cluster_sizes.dat','w'))
 pickle.dump(clusters.centers,open('cluster_centers.dat','w'))
 #save as text file to clusterCenters in hdfs
