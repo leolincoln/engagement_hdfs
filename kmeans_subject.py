@@ -5,7 +5,7 @@ from pyspark.mllib.clustering import KMeans, KMeansModel
 from numpy import array
 from math import sqrt
 import pickle
-subject = 0
+subject = 13
 
 # Evaluate clustering by computing Within Set Sum of Squared Errors
 def error(point, clusters):
@@ -124,9 +124,18 @@ def filter_0(line):
 time_now = time.time()
 sc = SparkContext()
 hdfsPrefix = 'hdfs://wolf.iems.northwestern.edu/user/huser54/'
-fileName1 = 'engagement/'
-fileName2 = 'engagementsample/'
-lines = sc.textFile(hdfsPrefix+fileName2)
+
+file_path1 = 'engagement/'
+file_path2 = 'engagementsample/'
+#TODO change the following parameters
+k0 = 500
+#k0 = 10
+sub_num = 10
+#sub_num = 1
+sub_k = 50
+#sub_k = 5
+#TODO change the file_path#,file_path1 is real data, file_path2 is sample data
+lines = sc.textFile(hdfsPrefix+file_path1)
 #map the values to xyz string -> dictionary of subjects with time series. 
 values = lines.map(value_pairs)
 print 'values obtained'
@@ -158,7 +167,7 @@ time_now = time.time()
 # Build the model (cluster the data)
 #document states:
 #classmethod train(rdd, k, maxIterations=100, runs=1, initializationMode='k-means||', seed=None, initializationSteps=5, epsilon=0.0001,initialModel=None)
-clusters = KMeans.train(parsedData, 500, maxIterations=100,runs=10, initializationMode="k-means||")
+clusters = KMeans.train(parsedData, k0, maxIterations=100,runs=10, initializationMode="k-means||")
 print 'cluster obtain time:',time.time()-time_now
 time_now = time.time()
 
@@ -182,14 +191,14 @@ save_cluster_sizes(cluster_sizes,'cluster_sizes_subject'+str(subject)+'.csv')
 save_cluster_centers(clusters.centers,'cluster_centers_subject'+str(subject)+'.csv')
 
 #get top clusters to split again
-top_clusters = [item[0] for item in sorted(cluster_sizes,key=lambda x:x[1],reverse=True)[0:10]]
+top_clusters = [item[0] for item in sorted(cluster_sizes,key=lambda x:x[1],reverse=True)[0:sub_num]]
 
 #now we got the top 10 clusters. For each cluster, we will split 50 again. 
 for top_cluster in top_clusters:
     top_data = parsedData.filter(lambda point:clusters.predict(point)==top_cluster)
     #now temp_data has all filtered by top_cluster. 
     #Now we are going to cluster it. 
-    top_model = KMeans.train(top_data, 50, maxIterations=100,runs=10, initializationMode="k-means||")
+    top_model = KMeans.train(top_data, sub_k, maxIterations=100,runs=10, initializationMode="k-means||")
     top_wsse = top_data.map(lambda point: error(point,top_model)).reduce(lambda x, y: x + y)
     top_ind = top_data.map(lambda point:clusters.predict(point))
     top_ind.collect()
