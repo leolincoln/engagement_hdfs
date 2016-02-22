@@ -158,7 +158,11 @@ print 'feature group'
 time_now = time.time()
 
 parsedData = feature_groups.map(lambda x:x[1])
+parsedData.cache()
 print 'parsed data'
+
+
+
 #print parsedData.first()
 #print 'parsed data obtain time:',time.time()-time_now
 time_now = time.time()
