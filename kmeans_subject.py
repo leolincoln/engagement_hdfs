@@ -5,7 +5,7 @@ from pyspark.mllib.clustering import KMeans, KMeansModel
 from numpy import array
 from math import sqrt
 import pickle
-subject = 13
+subject = 7 
 
 # Evaluate clustering by computing Within Set Sum of Squared Errors
 def error(point, clusters):
@@ -204,7 +204,7 @@ for top_cluster in top_clusters:
     #Now we are going to cluster it. 
     top_model = KMeans.train(top_data, sub_k, maxIterations=100,runs=10, initializationMode="k-means||")
     top_wsse = top_data.map(lambda point: error(point,top_model)).reduce(lambda x, y: x + y)
-    top_ind = top_data.map(lambda point:clusters.predict(point))
+    top_ind = top_data.map(lambda point:top_model.predict(point))
     top_ind.collect()
     top_sizes = top_ind.countByValue().items()
 
