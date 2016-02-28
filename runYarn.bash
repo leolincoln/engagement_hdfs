@@ -12,10 +12,10 @@ fi
 #fi
 #--num-executors 4 \
 #--master yarn \
+#--executor-cores 4 \
 export HADOOP_CONF_DIR=/etc/alternatives/hadoop-conf 
 /opt/cloudera/parcels/CDH/bin/spark-submit \
 --deploy-mode client \
 --name 'hadoop engagement' \
---executor-cores 4 \
---executor-memory 4g \
+--executor-memory 2g \
 $1 
