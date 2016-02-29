@@ -16,7 +16,10 @@ def read_subject_sizes(subject = subject):
             new_frame[0] = cluster_number_prefix+new_frame[0].astype(str)        
             frames.append(new_frame)      
             print len(frames)
-    return pd.concat(frames)
+    allframe =  pd.concat(frames)
+    centroids = set([item.split('_')[0] for item in allframe[0].astype(str) if '_' in item])
+    return allframe[~allframe[0].astype(str).isin(centroids)]
 
 if __name__=='__main__':
     print 'subject number:', sys.argv[1]
+    data = read_subject_sizes(subject = sys.argv[1])
