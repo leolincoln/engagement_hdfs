@@ -3,8 +3,18 @@ import sys
 import pandas as pd
 from glob import glob
 subject = 7
+import fnmatch
+import os
+#find_match('src','*.csv')
+def find_match(path,pattern):
+    matches = []
+    for root, dirnames, filenames in os.walk(path):
+        for filename in fnmatch.filter(filenames, pattern):
+            matches.append(os.path.join(root, filename))
+    return matches
+
 def read_subject_sizes(subject = subject):
-    file_names = glob('cluster_sizes_subject'+str(subject)+'*.csv')
+    file_names = find_match('cluster_sizes','cluster_sizes_subject'+str(subject)+'*.csv')
     frames = []
     for f in file_names:
         print 'processing',f

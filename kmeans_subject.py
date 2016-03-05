@@ -5,7 +5,7 @@ from pyspark.mllib.clustering import KMeans, KMeansModel
 from numpy import array
 from math import sqrt
 import pickle
-subject = 7 
+subject = 0 
 
 # Evaluate clustering by computing Within Set Sum of Squared Errors
 def error(point, clusters):
@@ -177,7 +177,7 @@ time_now = time.time()
 
 WSSSE = parsedData.map(lambda point: error(point,clusters)).reduce(lambda x, y: x + y)
 os.system('rm -rf WSSE_subject'+str(subject)+'.dat')
-with open('WSSE_subject'+str(subject)+'.dat','w') as f:
+with open('WSSEs/WSSE_subject'+str(subject)+'.dat','w') as f:
     f.write(str(WSSSE))
 
 time_now = time.time()
@@ -191,8 +191,8 @@ cluster_ind = parsedData.map(lambda point:clusters.predict(point))
 cluster_ind.collect()
 cluster_sizes = cluster_ind.countByValue().items()
 
-save_cluster_sizes(cluster_sizes,'cluster_sizes_subject'+str(subject)+'.csv')
-save_cluster_centers(clusters.centers,'cluster_centers_subject'+str(subject)+'.csv')
+save_cluster_sizes(cluster_sizes,'cluster_sizes/cluster_sizes_subject'+str(subject)+'.csv')
+save_cluster_centers(clusters.centers,'cluster_centers/cluster_centers_subject'+str(subject)+'.csv')
 
 #get top clusters to split again
 top_clusters = [item[0] for item in sorted(cluster_sizes,key=lambda x:x[1],reverse=True)[0:sub_num]]

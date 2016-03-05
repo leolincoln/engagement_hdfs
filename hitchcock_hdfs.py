@@ -1,10 +1,3 @@
-# -*- coding: utf-8 -*-
-'''
-Created on Sun Nov 09 14:11:45 2014
-
-@author: liu
-'''
-
 from io_routines import readMat2
 #from db_utilities import prepareInsert,prepareCreateTable,getSession
 import numpy as np
@@ -28,7 +21,7 @@ def norm_nodevide(x):
     d = d**0.5
     if d==0:
         print 'Encountered 0 nominator on series'
-        return x
+        return None
     for s in x:
         result.append((s-mean)/d)
     
@@ -81,6 +74,8 @@ def dft_worker(f,data,subject,file_name):
                 timeSeries = [data2[t][x][y][z] for t in xrange(len(data2))]
                 timeSeries = np.array(timeSeries).astype(float)
                 timeSeries = norm_nodevide(timeSeries)
+                if timeSeries is None:
+                    continue
                 #timeSeries = dft_y(timeSeries)
                 line = ';'.join([str(x),str(y),str(z),str(subject),','.join([str(item) for item in timeSeries])])
                 newfile.write(line+'\n')
@@ -93,10 +88,7 @@ def main():
 
     fileNames = ['HitchcockData.mat']
     for fileName in fileNames:
-        try:
-            f,data = readMat2(fileName)
-        except:
-            sys.exit('not found file '+fileName+':  exiting')
+        f,data = readMat2(fileName)
     threads = []
 
     for subject in xrange(len(data)):
