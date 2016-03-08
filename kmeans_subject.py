@@ -5,13 +5,22 @@ from pyspark.mllib.clustering import KMeans, KMeansModel
 from numpy import array
 from math import sqrt
 import pickle
-subject = 0 
+subject = 1
 
 # Evaluate clustering by computing Within Set Sum of Squared Errors
 def error(point, clusters):
     center = clusters.centers[clusters.predict(point)]
     return sqrt(sum([x**2 for x in (point - center)]))
 
+def error_by_center(point,clusters):
+    num = clusters.predict(point)
+    center = clusters.centers[num]
+    return (num,sqrt(sum([x**2 for x in np.subtract(point,center)])))
+
+def point_by_center(point,clusters):
+    num = clusters.predict(point)
+    center = clusters.centers[num]
+    return (num,tuple(sqrt(sum([x**2 for x in np.subtract(point,center)]))),1)
 def save_cluster_centers(centers,file_name):
     '''
     remove file_name file, create new file_name file, write item[0],item[1] for top_sizes in each line of file_name
@@ -25,9 +34,13 @@ def save_cluster_centers(centers,file_name):
 
     with open(file_name,'w') as f:
         for item in centers:
+            #optimized, for improvement in speed
+            f.write(','.join([str(item2) for item2 in item]))
+            '''
             for item2 in item:
                 f.write(str(item2))
                 f.write(',')
+            '''
             f.write('\n')
 
 def save_cluster_sizes(top_sizes,file_name):
@@ -39,15 +52,7 @@ def save_cluster_sizes(top_sizes,file_name):
     Returns:
         None
     '''
-    os.system('rm -rf '+file_name)
-
-    with open(file_name,'w') as f:
-        for item in top_sizes:
-            f.write(str(item[0]))
-            f.write(',')
-            f.write(str(item[1]))
-            f.write('\n')
-
+    save_cluster_centers(top_sizes,file_name)
 def xyz_feature(xyz_value):
     xyz_key = xyz_value[0]
     xyz_dict = xyz_value[1]
@@ -180,13 +185,29 @@ os.system('rm -rf WSSE_subject'+str(subject)+'.dat')
 with open('WSSEs/WSSE_subject'+str(subject)+'.dat','w') as f:
     f.write(str(WSSSE))
 
+cluster_point_distance = parsedData.map(lambda point:error_by_center(point,clusters))
+cluster_point_distance.persist()
+
+max_point_distance = cluster_point_distance.reduceByKey(lambda x,y:max(x,y)).collect()
+save_cluster_sizes(max_point_distance,'max_point_distance/'+str(subject)+'.csv')
+
+sum_count_point_distance = cluster_point_distance.combineByKey(lambda value:(value,1.0),lambda x,value:(x[0]+value,x[1]+1), lambda x,y:(x[0]+y[0],x[1]+y[1]))
+
+average_point_distance = sum_count_point_distance.map(lambda (num,(value_sum,count)):(num,value_sum/count)).collect()
+save_cluster_sizes(average_point_distance,'average_point_distance/'+str(subject)+'.csv')
+
+os.system('rm -rf max_point_distance'+str(subject)+'.dat')
+with open('max_point_distance'+str(subject)+'dat','w') as f:
+    f.write(str(max_point_distance))
+
 time_now = time.time()
 
 #cluter centers after calculating kmeans clustering
 #clusterCenters = sc.parallelize(clusters.clusterCenters)
 
-print 'clearing hdfs system'
-os.system('hdfs dfs -rm -r -f '+hdfsPrefix+'clusterCenters')
+#we dont need to clear hdfs system for now
+#print 'clearing hdfs system'
+#os.system('hdfs dfs -rm -r -f '+hdfsPrefix+'clusterCenters')
 cluster_ind = parsedData.map(lambda point:clusters.predict(point))
 cluster_ind.collect()
 cluster_sizes = cluster_ind.countByValue().items()
@@ -200,16 +221,19 @@ top_clusters = [item[0] for item in sorted(cluster_sizes,key=lambda x:x[1],rever
 #now we got the top 10 clusters. For each cluster, we will split 50 again. 
 for top_cluster in top_clusters:
     top_data = parsedData.filter(lambda point:clusters.predict(point)==top_cluster)
+
     #now temp_data has all filtered by top_cluster. 
     #Now we are going to cluster it. 
     top_model = KMeans.train(top_data, sub_k, maxIterations=100,runs=10, initializationMode="k-means||")
+    #top_data_point_distance = top_data.map(lambda point:error_by_center(point,top_model))
+    #top_data_point_distance.persist()
+
     top_wsse = top_data.map(lambda point: error(point,top_model)).reduce(lambda x, y: x + y)
     top_ind = top_data.map(lambda point:top_model.predict(point))
     top_ind.collect()
     top_sizes = top_ind.countByValue().items()
-
-    save_cluster_sizes(top_sizes,'cluster_sizes_subject'+str(subject)+'_'+str(top_cluster)+'.csv')
-    save_cluster_centers(top_model.centers,'cluster_centers_subject'+str(subject)+'_'+str(top_cluster)+'.csv')
+    save_cluster_sizes(top_sizes,'cluster_sizes/cluster_sizes_subject'+str(subject)+'_'+str(top_cluster)+'.csv')
+    save_cluster_centers(top_model.centers,'cluster_centers/cluster_centers_subject'+str(subject)+'_'+str(top_cluster)+'.csv')
     print 'finished top cluster',top_cluster
 
     
