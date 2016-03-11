@@ -57,7 +57,7 @@ def read_files(file_paths):
         data = read_file(file_path)
         data = data[data.columns[:-1]]
         dfs.append(data)
-    return pd.concat(dfs).T
+    return pd.concat(dfs)
 
 if __name__=='__main__':
     if len(sys.argv)<3:
@@ -73,3 +73,5 @@ if __name__=='__main__':
     data = read_files(file_names) 
     result = data.corr()
     plt.matshow(data.corr())
+    plt.colorbar()
+    plt.savefig('test'+str(subject)+'.png')
