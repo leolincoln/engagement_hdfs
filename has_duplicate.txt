@@ -1,0 +1,45 @@
+dft_worker for dft_worker for 10 started dft_worker for 2started 1457529449.44
+  1457529449.44
+started 1457529451.95
+dft_worker for 3 starteddft_worker for 1457529459.09
+dft_worker for 4 5 started 1457529462.27
+dft_worker for started 1457529465.5
+ 6 started 1457529468.82
+dft_worker for 7 dft_worker for 8 started 1457529471.82
+ dft_worker forstarted 1457529471.83
+ 9dft_worker for 10 started started 1457529478.22
+ dft_worker for 111457529480.85
+ started 1457529484.15
+dft_worker for 12dft_worker for started  1457529487.65
+ dft_worker for 1413 started 1457529491.44
+ started 1457529491.47
+dft_worker for dft_worker for 16 15 started dft_worker for started 1457529497.26
+1457529497.24
+17 started dft_worker fordft_worker for 19 18  started 1457529504.27
+1457529504.21
+started 1457529510.47
+ dft_worker fordft_worker for 21 started 1457529510.6
+ --- total run time: 61.9616129398 seconds ---
+ 20 started 1457529517.03
+--- run time for subject: 4003.05963397 seconds ---
+--- run time for subject: 4034.56676888 seconds ---
+--- run time for subject: 4029.386338 seconds ---
+--- run time for subject: 4059.69421506 seconds ---
+--- run time for subject: 4035.81889486 seconds ---
+--- run time for subject: 4060.26188803 seconds ---
+--- run time for subject: 4040.13876486 seconds ---
+--- run time for subject: 4049.12237191 seconds ---
+--- run time for subject: 4050.81689 seconds ---
+--- run time for subject: 4121.89946198 seconds ---
+--- run time for subject: 4066.87634706 seconds ---
+--- run time for subject: 4117.05669308 seconds ---
+--- run time for subject: 4109.05499387 seconds ---
+--- run time for subject: 4091.73484302 seconds ---
+--- run time for subject: 4073.60583401 seconds ---
+--- run time for subject: 4127.18436408 seconds ---
+--- run time for subject: 4108.01329184 seconds ---
+--- run time for subject: 4113.75999403 seconds ---
+--- run time for subject: 4091.85762191 seconds ---
+--- run time for subject: 4144.51344514 seconds ---
+--- run time for subject: 4141.51462412 seconds ---
+--- run time for subject: 4119.92448401 seconds ---

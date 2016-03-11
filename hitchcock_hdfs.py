@@ -19,13 +19,21 @@ def norm_nodevide(x):
     for s in x:
         d+=(s-mean)**2
     d = d**0.5
+    for item in x:
+        if float(item) < 0:
+            print 'negative value!'
+            print item
+
     if d==0:
-        print 'Encountered 0 nominator on series'
+        #print 'Encountered 0 nominator on series'
         return None
-    for s in x:
-        result.append((s-mean)/d)
+    return None
+    #ucomment here
+
+    #for s in x:
+    #    result.append((s-mean)/d)
     
-    return result
+    #return result
     
 def dft_y(x):
     '''
@@ -52,7 +60,7 @@ def dft_worker(f,data,subject,file_name):
         normalized DFT output for subjects. 
     '''
     print 'dft_worker for',subject,'started',time.time()
-    newfile = open(file_name,'a')
+    #newfile = open(file_name,'a')
     data2 = np.array(f[data[subject][0]])
     start_time2 = time.time();
     '''
@@ -77,9 +85,9 @@ def dft_worker(f,data,subject,file_name):
                 if timeSeries is None:
                     continue
                 #timeSeries = dft_y(timeSeries)
-                line = ';'.join([str(x),str(y),str(z),str(subject),','.join([str(item) for item in timeSeries])])
-                newfile.write(line+'\n')
-    newfile.close()
+                #line = ';'.join([str(x),str(y),str(z),str(subject),','.join([str(item) for item in timeSeries])])
+                #newfile.write(line+'\n')
+    #newfile.close()
     print("--- run time for subject: %s seconds ---" % str(time.time() - start_time2))
 
 

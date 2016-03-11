@@ -2,7 +2,7 @@
 #/opt/cloudera/parcels/CDH/bin/spark-submit \
 if [ $# -eq 0 ]
     then
-        echo "Usage: ./runYarn.bash fileName"
+        echo "Usage: ./runYarn.bash jobName fileName"
         exit
 fi
 #if [ ! -f $1  ]; then
@@ -15,7 +15,7 @@ fi
 export HADOOP_CONF_DIR=/etc/alternatives/hadoop-conf 
 /opt/cloudera/parcels/CDH/bin/spark-submit \
 --deploy-mode client \
---name 'hadoop engagement' \
+--name $1 \
 --executor-cores 4 \
 --executor-memory 6g \
-$1 
+$2
