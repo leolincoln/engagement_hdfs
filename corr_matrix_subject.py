@@ -3,6 +3,7 @@ import pandas as pd
 from os.path import join,getsize
 from pandas import Series,DataFrame
 import matplotlib.pyplot as plt
+from sklearn import metrics
 def get_files(path,template):
     '''
         Args:
@@ -71,7 +72,7 @@ if __name__=='__main__':
     template = 'cluster_centers_subject'+str(subject)+'.*csv'
     file_names = get_files(path,template)
     data = read_files(file_names) 
-    result = data.corr()
-    plt.matshow(data.corr())
+    result = metrics.pairwise.pairwise_distances(data)
+    plt.matshow(result)
     plt.colorbar()
     plt.savefig('test'+str(subject)+'.png')
