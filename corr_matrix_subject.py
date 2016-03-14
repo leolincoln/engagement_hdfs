@@ -52,7 +52,14 @@ def read_file(file_path):
     '''
     data = pd.read_csv(file_path,header=None)
     return data
+
 def read_files(file_paths):
+    '''
+    Args:
+        file_paths: a list of string of file path. 
+    Return:
+        a pandas dataframe of all file_paths
+    '''
     dfs = []
     for file_path in file_paths:
         data = read_file(file_path)

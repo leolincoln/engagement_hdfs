@@ -1,0 +1,292 @@
+16/03/14 17:44:44 INFO SparkContext: Running Spark version 1.3.0
+16/03/14 17:44:45 INFO SecurityManager: Changing view acls to: huser54
+16/03/14 17:44:45 INFO SecurityManager: Changing modify acls to: huser54
+16/03/14 17:44:45 INFO SecurityManager: SecurityManager: authentication disabled; ui acls disabled; users with view permissions: Set(huser54); users with modify permissions: Set(huser54)
+16/03/14 17:44:46 INFO Slf4jLogger: Slf4jLogger started
+16/03/14 17:44:46 INFO Remoting: Starting remoting
+16/03/14 17:44:46 INFO Remoting: Remoting started; listening on addresses :[akka.tcp://sparkDriver@wolf.iems.northwestern.edu:45434]
+16/03/14 17:44:46 INFO Remoting: Remoting now listens on addresses: [akka.tcp://sparkDriver@wolf.iems.northwestern.edu:45434]
+16/03/14 17:44:46 INFO Utils: Successfully started service 'sparkDriver' on port 45434.
+16/03/14 17:44:46 INFO SparkEnv: Registering MapOutputTracker
+16/03/14 17:44:46 INFO SparkEnv: Registering BlockManagerMaster
+16/03/14 17:44:46 INFO DiskBlockManager: Created local directory at /tmp/spark-4b4f79c9-10a8-41f2-94a4-426e574f014d/blockmgr-f8caa71d-8df4-4c9b-8605-f3c246fa1950
+16/03/14 17:44:46 INFO MemoryStore: MemoryStore started with capacity 265.4 MB
+16/03/14 17:44:47 INFO HttpFileServer: HTTP File server directory is /tmp/spark-1bb719a2-18d6-422e-b3c3-b738cf8c8853/httpd-050e9d1c-2d1a-4192-bd03-ac99379d1cba
+16/03/14 17:44:47 INFO HttpServer: Starting HTTP Server
+16/03/14 17:44:47 INFO Server: jetty-8.y.z-SNAPSHOT
+16/03/14 17:44:47 INFO AbstractConnector: Started SocketConnector@0.0.0.0:49769
+16/03/14 17:44:47 INFO Utils: Successfully started service 'HTTP file server' on port 49769.
+16/03/14 17:44:47 INFO SparkEnv: Registering OutputCommitCoordinator
+16/03/14 17:44:47 INFO Server: jetty-8.y.z-SNAPSHOT
+16/03/14 17:44:47 INFO AbstractConnector: Started SelectChannelConnector@0.0.0.0:4040
+16/03/14 17:44:47 INFO Utils: Successfully started service 'SparkUI' on port 4040.
+16/03/14 17:44:47 INFO SparkUI: Started SparkUI at http://wolf.iems.northwestern.edu:4040
+16/03/14 17:44:48 INFO RMProxy: Connecting to ResourceManager at wolf.iems.northwestern.edu/129.105.36.59:8032
+16/03/14 17:44:48 INFO Client: Requesting a new application from cluster with 4 NodeManagers
+16/03/14 17:44:48 INFO Client: Verifying our application has not requested more than the maximum memory capability of the cluster (25600 MB per container)
+16/03/14 17:44:48 INFO Client: Will allocate AM container, with 896 MB memory including 384 MB overhead
+16/03/14 17:44:48 INFO Client: Setting up container launch context for our AM
+16/03/14 17:44:48 INFO Client: Preparing resources for our AM container
+16/03/14 17:44:49 INFO Client: Uploading resource file:/home/huser54/engagement_hdfs/kmeans_subject.py -> hdfs://wolf.iems.northwestern.edu:8020/user/huser54/.sparkStaging/application_1457065373510_0634/kmeans_subject.py
+16/03/14 17:44:49 INFO Client: Setting up the launch environment for our AM container
+16/03/14 17:44:49 INFO SecurityManager: Changing view acls to: huser54
+16/03/14 17:44:49 INFO SecurityManager: Changing modify acls to: huser54
+16/03/14 17:44:49 INFO SecurityManager: SecurityManager: authentication disabled; ui acls disabled; users with view permissions: Set(huser54); users with modify permissions: Set(huser54)
+16/03/14 17:44:49 INFO Client: Submitting application 634 to ResourceManager
+16/03/14 17:44:49 INFO YarnClientImpl: Submitted application application_1457065373510_0634
+16/03/14 17:44:50 INFO Client: Application report for application_1457065373510_0634 (state: ACCEPTED)
+16/03/14 17:44:50 INFO Client: 
+	 client token: N/A
+	 diagnostics: N/A
+	 ApplicationMaster host: N/A
+	 ApplicationMaster RPC port: -1
+	 queue: root.default
+	 start time: 1457995489554
+	 final status: UNDEFINED
+	 tracking URL: http://wolf.iems.northwestern.edu:8088/proxy/application_1457065373510_0634/
+	 user: huser54
+16/03/14 17:44:51 INFO Client: Application report for application_1457065373510_0634 (state: ACCEPTED)
+16/03/14 17:44:52 INFO Client: Application report for application_1457065373510_0634 (state: ACCEPTED)
+16/03/14 17:44:53 INFO Client: Application report for application_1457065373510_0634 (state: ACCEPTED)
+16/03/14 17:44:53 INFO YarnClientSchedulerBackend: ApplicationMaster registered as Actor[akka.tcp://sparkYarnAM@cub1.local:54315/user/YarnAM#85879750]
+16/03/14 17:44:53 INFO YarnClientSchedulerBackend: Add WebUI Filter. org.apache.hadoop.yarn.server.webproxy.amfilter.AmIpFilter, Map(PROXY_HOSTS -> wolf.iems.northwestern.edu, PROXY_URI_BASES -> http://wolf.iems.northwestern.edu:8088/proxy/application_1457065373510_0634), /proxy/application_1457065373510_0634
+16/03/14 17:44:53 INFO JettyUtils: Adding filter: org.apache.hadoop.yarn.server.webproxy.amfilter.AmIpFilter
+16/03/14 17:44:54 INFO Client: Application report for application_1457065373510_0634 (state: RUNNING)
+16/03/14 17:44:54 INFO Client: 
+	 client token: N/A
+	 diagnostics: N/A
+	 ApplicationMaster host: cub1.local
+	 ApplicationMaster RPC port: 0
+	 queue: root.default
+	 start time: 1457995489554
+	 final status: UNDEFINED
+	 tracking URL: http://wolf.iems.northwestern.edu:8088/proxy/application_1457065373510_0634/
+	 user: huser54
+16/03/14 17:44:54 INFO YarnClientSchedulerBackend: Application application_1457065373510_0634 has started running.
+16/03/14 17:44:54 INFO NettyBlockTransferService: Server created on 56248
+16/03/14 17:44:54 INFO BlockManagerMaster: Trying to register BlockManager
+16/03/14 17:44:54 INFO BlockManagerMasterActor: Registering block manager wolf.iems.northwestern.edu:56248 with 265.4 MB RAM, BlockManagerId(<driver>, wolf.iems.northwestern.edu, 56248)
+16/03/14 17:44:54 INFO BlockManagerMaster: Registered BlockManager
+16/03/14 17:44:55 INFO EventLoggingListener: Logging events to hdfs://wolf.iems.northwestern.edu:8020/user/spark/applicationHistory/application_1457065373510_0634
+16/03/14 17:44:58 INFO YarnClientSchedulerBackend: Registered executor: Actor[akka.tcp://sparkExecutor@cub0.local:36241/user/Executor#87271616] with ID 2
+16/03/14 17:44:58 INFO YarnClientSchedulerBackend: Registered executor: Actor[akka.tcp://sparkExecutor@cub1.local:54282/user/Executor#1086975035] with ID 1
+16/03/14 17:44:58 INFO YarnClientSchedulerBackend: SchedulerBackend is ready for scheduling beginning after reached minRegisteredResourcesRatio: 0.8
+16/03/14 17:44:58 INFO BlockManagerMasterActor: Registering block manager cub1.local:55480 with 3.1 GB RAM, BlockManagerId(1, cub1.local, 55480)
+16/03/14 17:44:58 INFO BlockManagerMasterActor: Registering block manager cub0.local:48757 with 3.1 GB RAM, BlockManagerId(2, cub0.local, 48757)
+16/03/14 17:44:59 INFO MemoryStore: ensureFreeSpace(283511) called with curMem=0, maxMem=278302556
+16/03/14 17:44:59 INFO MemoryStore: Block broadcast_0 stored as values in memory (estimated size 276.9 KB, free 265.1 MB)
+16/03/14 17:44:59 INFO MemoryStore: ensureFreeSpace(22381) called with curMem=283511, maxMem=278302556
+16/03/14 17:44:59 INFO MemoryStore: Block broadcast_0_piece0 stored as bytes in memory (estimated size 21.9 KB, free 265.1 MB)
+16/03/14 17:44:59 INFO BlockManagerInfo: Added broadcast_0_piece0 in memory on wolf.iems.northwestern.edu:56248 (size: 21.9 KB, free: 265.4 MB)
+16/03/14 17:44:59 INFO BlockManagerMaster: Updated info of block broadcast_0_piece0
+16/03/14 17:44:59 INFO SparkContext: Created broadcast 0 from textFile at NativeMethodAccessorImpl.java:-2
+16/03/14 17:44:59 INFO FileInputFormat: Total input paths to process : 22
+16/03/14 17:44:59 INFO NetworkTopology: Adding a new node: /default/192.168.0.10:50010
+16/03/14 17:44:59 INFO NetworkTopology: Adding a new node: /default/129.105.36.59:50010
+16/03/14 17:44:59 INFO NetworkTopology: Adding a new node: /default/192.168.0.13:50010
+16/03/14 17:44:59 INFO SparkContext: Starting job: takeSample at KMeans.scala:288
+16/03/14 17:44:59 INFO DAGScheduler: Registering RDD 4 (reduceByKey at /home/huser54/engagement_hdfs/kmeans_subject.py:152)
+16/03/14 17:44:59 INFO DAGScheduler: Got job 0 (takeSample at KMeans.scala:288) with 174 output partitions (allowLocal=false)
+16/03/14 17:44:59 INFO DAGScheduler: Final stage: Stage 1(takeSample at KMeans.scala:288)
+16/03/14 17:44:59 INFO DAGScheduler: Parents of final stage: List(Stage 0)
+16/03/14 17:44:59 INFO DAGScheduler: Missing parents: List(Stage 0)
+16/03/14 17:45:00 INFO DAGScheduler: Submitting Stage 0 (PairwiseRDD[4] at reduceByKey at /home/huser54/engagement_hdfs/kmeans_subject.py:152), which has no missing parents
+16/03/14 17:45:00 INFO MemoryStore: ensureFreeSpace(8544) called with curMem=305892, maxMem=278302556
+16/03/14 17:45:00 INFO MemoryStore: Block broadcast_1 stored as values in memory (estimated size 8.3 KB, free 265.1 MB)
+16/03/14 17:45:00 INFO MemoryStore: ensureFreeSpace(5404) called with curMem=314436, maxMem=278302556
+16/03/14 17:45:00 INFO MemoryStore: Block broadcast_1_piece0 stored as bytes in memory (estimated size 5.3 KB, free 265.1 MB)
+16/03/14 17:45:00 INFO BlockManagerInfo: Added broadcast_1_piece0 in memory on wolf.iems.northwestern.edu:56248 (size: 5.3 KB, free: 265.4 MB)
+16/03/14 17:45:00 INFO BlockManagerMaster: Updated info of block broadcast_1_piece0
+16/03/14 17:45:00 INFO SparkContext: Created broadcast 1 from broadcast at DAGScheduler.scala:834
+16/03/14 17:45:00 INFO DAGScheduler: Submitting 174 missing tasks from Stage 0 (PairwiseRDD[4] at reduceByKey at /home/huser54/engagement_hdfs/kmeans_subject.py:152)
+16/03/14 17:45:00 INFO YarnScheduler: Adding task set 0.0 with 174 tasks
+16/03/14 17:45:00 INFO TaskSetManager: Starting task 0.0 in stage 0.0 (TID 0, cub0.local, NODE_LOCAL, 1329 bytes)
+16/03/14 17:45:00 INFO TaskSetManager: Starting task 3.0 in stage 0.0 (TID 1, cub1.local, NODE_LOCAL, 1329 bytes)
+16/03/14 17:45:00 INFO TaskSetManager: Starting task 5.0 in stage 0.0 (TID 2, cub0.local, NODE_LOCAL, 1329 bytes)
+16/03/14 17:45:00 INFO TaskSetManager: Starting task 4.0 in stage 0.0 (TID 3, cub1.local, NODE_LOCAL, 1329 bytes)
+16/03/14 17:45:00 INFO TaskSetManager: Starting task 6.0 in stage 0.0 (TID 4, cub0.local, NODE_LOCAL, 1329 bytes)
+16/03/14 17:45:00 INFO TaskSetManager: Starting task 8.0 in stage 0.0 (TID 5, cub1.local, NODE_LOCAL, 1329 bytes)
+16/03/14 17:45:00 INFO TaskSetManager: Starting task 10.0 in stage 0.0 (TID 6, cub0.local, NODE_LOCAL, 1329 bytes)
+16/03/14 17:45:00 INFO TaskSetManager: Starting task 21.0 in stage 0.0 (TID 7, cub1.local, NODE_LOCAL, 1330 bytes)
+16/03/14 17:45:00 INFO BlockManagerInfo: Added broadcast_1_piece0 in memory on cub0.local:48757 (size: 5.3 KB, free: 3.1 GB)
+16/03/14 17:45:00 INFO BlockManagerInfo: Added broadcast_1_piece0 in memory on cub1.local:55480 (size: 5.3 KB, free: 3.1 GB)
+16/03/14 17:45:02 INFO BlockManagerInfo: Added broadcast_0_piece0 in memory on cub1.local:55480 (size: 21.9 KB, free: 3.1 GB)
+16/03/14 17:45:02 INFO BlockManagerInfo: Added broadcast_0_piece0 in memory on cub0.local:48757 (size: 21.9 KB, free: 3.1 GB)
+16/03/14 17:45:08 INFO TaskSetManager: Starting task 22.0 in stage 0.0 (TID 8, cub1.local, NODE_LOCAL, 1330 bytes)
+16/03/14 17:45:09 INFO TaskSetManager: Finished task 3.0 in stage 0.0 (TID 1) in 8666 ms on cub1.local (1/174)
+16/03/14 17:45:09 INFO TaskSetManager: Starting task 23.0 in stage 0.0 (TID 9, cub1.local, NODE_LOCAL, 1330 bytes)
+16/03/14 17:45:09 INFO TaskSetManager: Finished task 21.0 in stage 0.0 (TID 7) in 8747 ms on cub1.local (2/174)
+16/03/14 17:45:09 INFO TaskSetManager: Starting task 25.0 in stage 0.0 (TID 10, cub1.local, NODE_LOCAL, 1330 bytes)
+16/03/14 17:45:09 INFO TaskSetManager: Finished task 4.0 in stage 0.0 (TID 3) in 8891 ms on cub1.local (3/174)
+16/03/14 17:45:09 INFO TaskSetManager: Starting task 27.0 in stage 0.0 (TID 11, cub1.local, NODE_LOCAL, 1330 bytes)
+16/03/14 17:45:09 INFO TaskSetManager: Finished task 8.0 in stage 0.0 (TID 5) in 8965 ms on cub1.local (4/174)
+16/03/14 17:45:09 INFO TaskSetManager: Starting task 12.0 in stage 0.0 (TID 12, cub0.local, NODE_LOCAL, 1329 bytes)
+16/03/14 17:45:09 INFO TaskSetManager: Finished task 0.0 in stage 0.0 (TID 0) in 9449 ms on cub0.local (5/174)
+16/03/14 17:45:09 INFO TaskSetManager: Starting task 30.0 in stage 0.0 (TID 13, cub0.local, NODE_LOCAL, 1330 bytes)
+16/03/14 17:45:09 INFO TaskSetManager: Finished task 10.0 in stage 0.0 (TID 6) in 9535 ms on cub0.local (6/174)
+16/03/14 17:45:09 INFO TaskSetManager: Starting task 35.0 in stage 0.0 (TID 14, cub0.local, NODE_LOCAL, 1330 bytes)
+16/03/14 17:45:09 INFO TaskSetManager: Starting task 41.0 in stage 0.0 (TID 15, cub0.local, NODE_LOCAL, 1330 bytes)
+16/03/14 17:45:09 INFO TaskSetManager: Finished task 5.0 in stage 0.0 (TID 2) in 9560 ms on cub0.local (7/174)
+16/03/14 17:45:09 INFO TaskSetManager: Finished task 6.0 in stage 0.0 (TID 4) in 9573 ms on cub0.local (8/174)
+16/03/14 17:45:10 INFO TaskSetManager: Starting task 32.0 in stage 0.0 (TID 16, cub1.local, NODE_LOCAL, 1330 bytes)
+16/03/14 17:45:10 INFO TaskSetManager: Finished task 22.0 in stage 0.0 (TID 8) in 1959 ms on cub1.local (9/174)
+16/03/14 17:45:13 INFO TaskSetManager: Starting task 34.0 in stage 0.0 (TID 17, cub1.local, NODE_LOCAL, 1330 bytes)
+16/03/14 17:45:13 INFO TaskSetManager: Finished task 23.0 in stage 0.0 (TID 9) in 4305 ms on cub1.local (10/174)
+16/03/14 17:45:13 INFO TaskSetManager: Starting task 45.0 in stage 0.0 (TID 18, cub0.local, NODE_LOCAL, 1330 bytes)
+16/03/14 17:45:13 INFO TaskSetManager: Finished task 30.0 in stage 0.0 (TID 13) in 3620 ms on cub0.local (11/174)
+16/03/14 17:45:13 INFO TaskSetManager: Starting task 39.0 in stage 0.0 (TID 19, cub1.local, NODE_LOCAL, 1330 bytes)
+16/03/14 17:45:13 INFO TaskSetManager: Finished task 25.0 in stage 0.0 (TID 10) in 4613 ms on cub1.local (12/174)
+16/03/14 17:45:14 INFO TaskSetManager: Starting task 42.0 in stage 0.0 (TID 20, cub1.local, NODE_LOCAL, 1330 bytes)
+16/03/14 17:45:14 INFO TaskSetManager: Finished task 27.0 in stage 0.0 (TID 11) in 4832 ms on cub1.local (13/174)
+16/03/14 17:45:16 INFO TaskSetManager: Starting task 43.0 in stage 0.0 (TID 21, cub1.local, NODE_LOCAL, 1330 bytes)
+16/03/14 17:45:16 INFO TaskSetManager: Finished task 32.0 in stage 0.0 (TID 16) in 5161 ms on cub1.local (14/174)
+16/03/14 17:45:17 INFO TaskSetManager: Starting task 60.0 in stage 0.0 (TID 22, cub0.local, NODE_LOCAL, 1330 bytes)
+16/03/14 17:45:17 INFO TaskSetManager: Finished task 35.0 in stage 0.0 (TID 14) in 7308 ms on cub0.local (15/174)
+16/03/14 17:45:17 INFO TaskSetManager: Starting task 61.0 in stage 0.0 (TID 23, cub0.local, NODE_LOCAL, 1330 bytes)
+16/03/14 17:45:17 INFO TaskSetManager: Finished task 41.0 in stage 0.0 (TID 15) in 7348 ms on cub0.local (16/174)
+16/03/14 17:45:17 INFO TaskSetManager: Starting task 62.0 in stage 0.0 (TID 24, cub0.local, NODE_LOCAL, 1330 bytes)
+16/03/14 17:45:17 INFO TaskSetManager: Finished task 12.0 in stage 0.0 (TID 12) in 7896 ms on cub0.local (17/174)
+16/03/14 17:45:18 INFO TaskSetManager: Starting task 44.0 in stage 0.0 (TID 25, cub1.local, NODE_LOCAL, 1330 bytes)
+16/03/14 17:45:18 INFO TaskSetManager: Finished task 34.0 in stage 0.0 (TID 17) in 5223 ms on cub1.local (18/174)
+16/03/14 17:45:18 INFO TaskSetManager: Starting task 49.0 in stage 0.0 (TID 26, cub1.local, NODE_LOCAL, 1330 bytes)
+16/03/14 17:45:18 INFO TaskSetManager: Finished task 42.0 in stage 0.0 (TID 20) in 4837 ms on cub1.local (19/174)
+16/03/14 17:45:19 INFO TaskSetManager: Starting task 66.0 in stage 0.0 (TID 27, cub0.local, NODE_LOCAL, 1330 bytes)
+16/03/14 17:45:19 INFO TaskSetManager: Finished task 45.0 in stage 0.0 (TID 18) in 5703 ms on cub0.local (20/174)
+16/03/14 17:45:19 INFO TaskSetManager: Starting task 50.0 in stage 0.0 (TID 28, cub1.local, NODE_LOCAL, 1330 bytes)
+16/03/14 17:45:19 INFO TaskSetManager: Finished task 39.0 in stage 0.0 (TID 19) in 5393 ms on cub1.local (21/174)
+16/03/14 17:45:20 INFO TaskSetManager: Starting task 55.0 in stage 0.0 (TID 29, cub1.local, NODE_LOCAL, 1330 bytes)
+16/03/14 17:45:21 INFO TaskSetManager: Finished task 43.0 in stage 0.0 (TID 21) in 4885 ms on cub1.local (22/174)
+16/03/14 17:45:22 INFO TaskSetManager: Starting task 72.0 in stage 0.0 (TID 30, cub0.local, NODE_LOCAL, 1330 bytes)
+16/03/14 17:45:22 INFO TaskSetManager: Finished task 62.0 in stage 0.0 (TID 24) in 4343 ms on cub0.local (23/174)
+16/03/14 17:45:22 INFO TaskSetManager: Starting task 83.0 in stage 0.0 (TID 31, cub0.local, NODE_LOCAL, 1330 bytes)
+16/03/14 17:45:22 INFO TaskSetManager: Finished task 60.0 in stage 0.0 (TID 22) in 4819 ms on cub0.local (24/174)
+16/03/14 17:45:22 INFO TaskSetManager: Starting task 88.0 in stage 0.0 (TID 32, cub0.local, NODE_LOCAL, 1330 bytes)
+16/03/14 17:45:22 INFO TaskSetManager: Finished task 61.0 in stage 0.0 (TID 23) in 4789 ms on cub0.local (25/174)
+16/03/14 17:45:24 INFO TaskSetManager: Starting task 58.0 in stage 0.0 (TID 33, cub1.local, NODE_LOCAL, 1330 bytes)
+16/03/14 17:45:24 INFO TaskSetManager: Finished task 44.0 in stage 0.0 (TID 25) in 5551 ms on cub1.local (26/174)
+16/03/14 17:45:24 INFO TaskSetManager: Starting task 89.0 in stage 0.0 (TID 34, cub0.local, NODE_LOCAL, 1330 bytes)
+16/03/14 17:45:24 INFO TaskSetManager: Finished task 66.0 in stage 0.0 (TID 27) in 5015 ms on cub0.local (27/174)
+16/03/14 17:45:24 INFO TaskSetManager: Starting task 64.0 in stage 0.0 (TID 35, cub1.local, NODE_LOCAL, 1330 bytes)
+16/03/14 17:45:24 INFO TaskSetManager: Finished task 49.0 in stage 0.0 (TID 26) in 5812 ms on cub1.local (28/174)
+16/03/14 17:45:25 INFO TaskSetManager: Starting task 68.0 in stage 0.0 (TID 36, cub1.local, NODE_LOCAL, 1330 bytes)
+16/03/14 17:45:25 INFO TaskSetManager: Finished task 50.0 in stage 0.0 (TID 28) in 5964 ms on cub1.local (29/174)
+16/03/14 17:45:26 INFO TaskSetManager: Starting task 92.0 in stage 0.0 (TID 37, cub0.local, NODE_LOCAL, 1330 bytes)
+16/03/14 17:45:26 INFO TaskSetManager: Finished task 83.0 in stage 0.0 (TID 31) in 4445 ms on cub0.local (30/174)
+16/03/14 17:45:26 INFO TaskSetManager: Starting task 100.0 in stage 0.0 (TID 38, cub0.local, NODE_LOCAL, 1329 bytes)
+16/03/14 17:45:26 INFO TaskSetManager: Finished task 72.0 in stage 0.0 (TID 30) in 4491 ms on cub0.local (31/174)
+16/03/14 17:45:26 INFO TaskSetManager: Starting task 102.0 in stage 0.0 (TID 39, cub0.local, NODE_LOCAL, 1329 bytes)
+16/03/14 17:45:26 INFO TaskSetManager: Finished task 88.0 in stage 0.0 (TID 32) in 4633 ms on cub0.local (32/174)
+16/03/14 17:45:27 INFO TaskSetManager: Starting task 70.0 in stage 0.0 (TID 40, cub1.local, NODE_LOCAL, 1330 bytes)
+16/03/14 17:45:27 INFO TaskSetManager: Finished task 55.0 in stage 0.0 (TID 29) in 6326 ms on cub1.local (33/174)
+16/03/14 17:45:28 INFO TaskSetManager: Starting task 104.0 in stage 0.0 (TID 41, cub0.local, NODE_LOCAL, 1330 bytes)
+16/03/14 17:45:28 INFO TaskSetManager: Finished task 89.0 in stage 0.0 (TID 34) in 4801 ms on cub0.local (34/174)
+16/03/14 17:45:29 INFO TaskSetManager: Starting task 109.0 in stage 0.0 (TID 42, cub0.local, NODE_LOCAL, 1330 bytes)
+16/03/14 17:45:29 INFO TaskSetManager: Finished task 102.0 in stage 0.0 (TID 39) in 2855 ms on cub0.local (35/174)
+16/03/14 17:45:30 INFO TaskSetManager: Starting task 74.0 in stage 0.0 (TID 43, cub1.local, NODE_LOCAL, 1330 bytes)
+16/03/14 17:45:30 INFO TaskSetManager: Finished task 58.0 in stage 0.0 (TID 33) in 6106 ms on cub1.local (36/174)
+16/03/14 17:45:30 INFO TaskSetManager: Starting task 78.0 in stage 0.0 (TID 44, cub1.local, NODE_LOCAL, 1330 bytes)
+16/03/14 17:45:30 INFO TaskSetManager: Finished task 64.0 in stage 0.0 (TID 35) in 5801 ms on cub1.local (37/174)
+16/03/14 17:45:30 INFO TaskSetManager: Starting task 87.0 in stage 0.0 (TID 45, cub1.local, NODE_LOCAL, 1330 bytes)
+16/03/14 17:45:30 INFO TaskSetManager: Finished task 68.0 in stage 0.0 (TID 36) in 5414 ms on cub1.local (38/174)
+16/03/14 17:45:30 INFO TaskSetManager: Starting task 91.0 in stage 0.0 (TID 46, cub1.local, NODE_LOCAL, 1330 bytes)
+16/03/14 17:45:30 INFO TaskSetManager: Finished task 70.0 in stage 0.0 (TID 40) in 3425 ms on cub1.local (39/174)
+16/03/14 17:45:31 INFO TaskSetManager: Starting task 110.0 in stage 0.0 (TID 47, cub0.local, NODE_LOCAL, 1330 bytes)
+16/03/14 17:45:31 INFO TaskSetManager: Finished task 100.0 in stage 0.0 (TID 38) in 5269 ms on cub0.local (40/174)
+16/03/14 17:45:31 INFO TaskSetManager: Starting task 114.0 in stage 0.0 (TID 48, cub0.local, NODE_LOCAL, 1330 bytes)
+16/03/14 17:45:31 INFO TaskSetManager: Finished task 92.0 in stage 0.0 (TID 37) in 5374 ms on cub0.local (41/174)
+16/03/14 17:45:34 INFO TaskSetManager: Starting task 126.0 in stage 0.0 (TID 49, cub0.local, NODE_LOCAL, 1329 bytes)
+16/03/14 17:45:34 INFO TaskSetManager: Finished task 109.0 in stage 0.0 (TID 42) in 4601 ms on cub0.local (42/174)
+16/03/14 17:45:34 INFO TaskSetManager: Starting task 130.0 in stage 0.0 (TID 50, cub0.local, NODE_LOCAL, 1329 bytes)
+16/03/14 17:45:34 INFO TaskSetManager: Finished task 104.0 in stage 0.0 (TID 41) in 5431 ms on cub0.local (43/174)
+16/03/14 17:45:35 INFO TaskSetManager: Starting task 95.0 in stage 0.0 (TID 51, cub1.local, NODE_LOCAL, 1329 bytes)
+16/03/14 17:45:35 INFO TaskSetManager: Finished task 74.0 in stage 0.0 (TID 43) in 4900 ms on cub1.local (44/174)
+16/03/14 17:45:35 INFO TaskSetManager: Starting task 106.0 in stage 0.0 (TID 52, cub1.local, NODE_LOCAL, 1330 bytes)
+16/03/14 17:45:35 INFO TaskSetManager: Finished task 91.0 in stage 0.0 (TID 46) in 4514 ms on cub1.local (45/174)
+16/03/14 17:45:35 INFO TaskSetManager: Starting task 107.0 in stage 0.0 (TID 53, cub1.local, NODE_LOCAL, 1330 bytes)
+16/03/14 17:45:35 INFO TaskSetManager: Finished task 78.0 in stage 0.0 (TID 44) in 4771 ms on cub1.local (46/174)
+16/03/14 17:45:35 INFO TaskSetManager: Starting task 108.0 in stage 0.0 (TID 54, cub1.local, NODE_LOCAL, 1330 bytes)
+16/03/14 17:45:35 INFO TaskSetManager: Finished task 87.0 in stage 0.0 (TID 45) in 5205 ms on cub1.local (47/174)
+16/03/14 17:45:35 INFO TaskSetManager: Starting task 131.0 in stage 0.0 (TID 55, cub0.local, NODE_LOCAL, 1329 bytes)
+16/03/14 17:45:35 INFO TaskSetManager: Finished task 114.0 in stage 0.0 (TID 48) in 4152 ms on cub0.local (48/174)
+16/03/14 17:45:36 INFO TaskSetManager: Starting task 132.0 in stage 0.0 (TID 56, cub0.local, NODE_LOCAL, 1329 bytes)
+16/03/14 17:45:36 INFO TaskSetManager: Finished task 110.0 in stage 0.0 (TID 47) in 4360 ms on cub0.local (49/174)
+16/03/14 17:45:39 INFO TaskSetManager: Starting task 142.0 in stage 0.0 (TID 57, cub0.local, NODE_LOCAL, 1329 bytes)
+16/03/14 17:45:39 INFO TaskSetManager: Finished task 126.0 in stage 0.0 (TID 49) in 5079 ms on cub0.local (50/174)
+16/03/14 17:45:39 INFO TaskSetManager: Starting task 118.0 in stage 0.0 (TID 58, cub1.local, NODE_LOCAL, 1330 bytes)
+16/03/14 17:45:39 INFO TaskSetManager: Finished task 95.0 in stage 0.0 (TID 51) in 4045 ms on cub1.local (51/174)
+16/03/14 17:45:39 INFO TaskSetManager: Starting task 121.0 in stage 0.0 (TID 59, cub1.local, NODE_LOCAL, 1329 bytes)
+16/03/14 17:45:39 INFO TaskSetManager: Finished task 106.0 in stage 0.0 (TID 52) in 4035 ms on cub1.local (52/174)
+16/03/14 17:45:39 INFO TaskSetManager: Starting task 145.0 in stage 0.0 (TID 60, cub0.local, NODE_LOCAL, 1329 bytes)
+16/03/14 17:45:39 INFO TaskSetManager: Finished task 130.0 in stage 0.0 (TID 50) in 4995 ms on cub0.local (53/174)
+16/03/14 17:45:39 INFO TaskSetManager: Starting task 127.0 in stage 0.0 (TID 61, cub1.local, NODE_LOCAL, 1329 bytes)
+16/03/14 17:45:40 INFO TaskSetManager: Finished task 108.0 in stage 0.0 (TID 54) in 4196 ms on cub1.local (54/174)
+16/03/14 17:45:40 INFO TaskSetManager: Starting task 128.0 in stage 0.0 (TID 62, cub1.local, NODE_LOCAL, 1329 bytes)
+16/03/14 17:45:40 INFO TaskSetManager: Finished task 107.0 in stage 0.0 (TID 53) in 4696 ms on cub1.local (55/174)
+16/03/14 17:45:40 INFO TaskSetManager: Starting task 153.0 in stage 0.0 (TID 63, cub0.local, NODE_LOCAL, 1329 bytes)
+16/03/14 17:45:40 INFO TaskSetManager: Finished task 131.0 in stage 0.0 (TID 55) in 4698 ms on cub0.local (56/174)
+16/03/14 17:45:40 INFO TaskSetManager: Starting task 162.0 in stage 0.0 (TID 64, cub0.local, NODE_LOCAL, 1329 bytes)
+16/03/14 17:45:40 INFO TaskSetManager: Finished task 132.0 in stage 0.0 (TID 56) in 4672 ms on cub0.local (57/174)
+16/03/14 17:45:41 INFO TaskSetManager: Starting task 133.0 in stage 0.0 (TID 65, cub1.local, NODE_LOCAL, 1329 bytes)
+16/03/14 17:45:41 INFO TaskSetManager: Finished task 118.0 in stage 0.0 (TID 58) in 2640 ms on cub1.local (58/174)
+16/03/14 17:45:44 INFO TaskSetManager: Starting task 166.0 in stage 0.0 (TID 66, cub0.local, NODE_LOCAL, 1329 bytes)
+16/03/14 17:45:44 INFO TaskSetManager: Finished task 142.0 in stage 0.0 (TID 57) in 4879 ms on cub0.local (59/174)
+16/03/14 17:45:44 INFO TaskSetManager: Starting task 173.0 in stage 0.0 (TID 67, cub0.local, NODE_LOCAL, 1329 bytes)
+16/03/14 17:45:44 INFO TaskSetManager: Finished task 145.0 in stage 0.0 (TID 60) in 4733 ms on cub0.local (60/174)
+16/03/14 17:45:44 INFO TaskSetManager: Starting task 134.0 in stage 0.0 (TID 68, cub1.local, NODE_LOCAL, 1329 bytes)
+16/03/14 17:45:44 INFO TaskSetManager: Finished task 121.0 in stage 0.0 (TID 59) in 5299 ms on cub1.local (61/174)
+16/03/14 17:45:44 INFO TaskSetManager: Starting task 136.0 in stage 0.0 (TID 69, cub1.local, NODE_LOCAL, 1329 bytes)
+16/03/14 17:45:44 INFO TaskSetManager: Finished task 133.0 in stage 0.0 (TID 65) in 2790 ms on cub1.local (62/174)
+16/03/14 17:45:45 INFO TaskSetManager: Finished task 153.0 in stage 0.0 (TID 63) in 4851 ms on cub0.local (63/174)
+16/03/14 17:45:45 INFO TaskSetManager: Starting task 138.0 in stage 0.0 (TID 70, cub1.local, NODE_LOCAL, 1329 bytes)
+16/03/14 17:45:45 INFO TaskSetManager: Finished task 127.0 in stage 0.0 (TID 61) in 5540 ms on cub1.local (64/174)
+16/03/14 17:45:45 INFO TaskSetManager: Finished task 162.0 in stage 0.0 (TID 64) in 4852 ms on cub0.local (65/174)
+16/03/14 17:45:45 INFO TaskSetManager: Starting task 141.0 in stage 0.0 (TID 71, cub1.local, NODE_LOCAL, 1329 bytes)
+16/03/14 17:45:45 INFO TaskSetManager: Finished task 128.0 in stage 0.0 (TID 62) in 5722 ms on cub1.local (66/174)
+16/03/14 17:45:46 INFO TaskSetManager: Finished task 173.0 in stage 0.0 (TID 67) in 2721 ms on cub0.local (67/174)
+16/03/14 17:45:48 INFO TaskSetManager: Starting task 144.0 in stage 0.0 (TID 72, cub1.local, NODE_LOCAL, 1329 bytes)
+16/03/14 17:45:48 INFO TaskSetManager: Finished task 141.0 in stage 0.0 (TID 71) in 3107 ms on cub1.local (68/174)
+16/03/14 17:45:49 INFO TaskSetManager: Finished task 166.0 in stage 0.0 (TID 66) in 5168 ms on cub0.local (69/174)
+16/03/14 17:45:49 INFO TaskSetManager: Starting task 149.0 in stage 0.0 (TID 73, cub1.local, NODE_LOCAL, 1329 bytes)
+16/03/14 17:45:49 INFO TaskSetManager: Finished task 136.0 in stage 0.0 (TID 69) in 5333 ms on cub1.local (70/174)
+16/03/14 17:45:50 INFO TaskSetManager: Starting task 152.0 in stage 0.0 (TID 74, cub1.local, NODE_LOCAL, 1329 bytes)
+16/03/14 17:45:50 INFO TaskSetManager: Finished task 134.0 in stage 0.0 (TID 68) in 5553 ms on cub1.local (71/174)
+16/03/14 17:45:50 INFO TaskSetManager: Starting task 155.0 in stage 0.0 (TID 75, cub1.local, NODE_LOCAL, 1329 bytes)
+16/03/14 17:45:50 INFO TaskSetManager: Finished task 138.0 in stage 0.0 (TID 70) in 4633 ms on cub1.local (72/174)
+16/03/14 17:45:52 INFO TaskSetManager: Starting task 157.0 in stage 0.0 (TID 76, cub1.local, NODE_LOCAL, 1329 bytes)
+16/03/14 17:45:52 INFO TaskSetManager: Finished task 149.0 in stage 0.0 (TID 73) in 2092 ms on cub1.local (73/174)
+16/03/14 17:45:53 INFO TaskSetManager: Starting task 158.0 in stage 0.0 (TID 77, cub1.local, NODE_LOCAL, 1329 bytes)
+16/03/14 17:45:53 INFO TaskSetManager: Finished task 157.0 in stage 0.0 (TID 76) in 1054 ms on cub1.local (74/174)
+16/03/14 17:45:53 INFO TaskSetManager: Starting task 163.0 in stage 0.0 (TID 78, cub1.local, NODE_LOCAL, 1329 bytes)
+16/03/14 17:45:53 INFO TaskSetManager: Finished task 144.0 in stage 0.0 (TID 72) in 4350 ms on cub1.local (75/174)
+16/03/14 17:45:54 INFO TaskSetManager: Starting task 170.0 in stage 0.0 (TID 79, cub1.local, NODE_LOCAL, 1329 bytes)
+16/03/14 17:45:54 INFO TaskSetManager: Finished task 152.0 in stage 0.0 (TID 74) in 4445 ms on cub1.local (76/174)
+16/03/14 17:45:54 INFO TaskSetManager: Starting task 172.0 in stage 0.0 (TID 80, cub1.local, NODE_LOCAL, 1329 bytes)
+16/03/14 17:45:54 INFO TaskSetManager: Finished task 155.0 in stage 0.0 (TID 75) in 4532 ms on cub1.local (77/174)
+16/03/14 17:45:57 INFO TaskSetManager: Finished task 163.0 in stage 0.0 (TID 78) in 4052 ms on cub1.local (78/174)
+16/03/14 17:45:57 INFO TaskSetManager: Finished task 158.0 in stage 0.0 (TID 77) in 4253 ms on cub1.local (79/174)
+16/03/14 17:45:57 INFO TaskSetManager: Starting task 1.0 in stage 0.0 (TID 81, cub0.local, RACK_LOCAL, 1329 bytes)
+16/03/14 17:45:57 INFO TaskSetManager: Starting task 2.0 in stage 0.0 (TID 82, cub1.local, RACK_LOCAL, 1329 bytes)
+16/03/14 17:45:57 INFO TaskSetManager: Starting task 7.0 in stage 0.0 (TID 83, cub0.local, RACK_LOCAL, 1329 bytes)
+16/03/14 17:45:57 INFO TaskSetManager: Starting task 9.0 in stage 0.0 (TID 84, cub1.local, RACK_LOCAL, 1329 bytes)
+16/03/14 17:45:57 INFO TaskSetManager: Starting task 11.0 in stage 0.0 (TID 85, cub0.local, RACK_LOCAL, 1329 bytes)
+16/03/14 17:45:57 INFO TaskSetManager: Starting task 13.0 in stage 0.0 (TID 86, cub0.local, RACK_LOCAL, 1329 bytes)
+16/03/14 17:45:58 INFO TaskSetManager: Starting task 14.0 in stage 0.0 (TID 87, cub1.local, RACK_LOCAL, 1329 bytes)
+16/03/14 17:45:58 INFO TaskSetManager: Finished task 170.0 in stage 0.0 (TID 79) in 4144 ms on cub1.local (80/174)
+16/03/14 17:45:58 INFO TaskSetManager: Starting task 15.0 in stage 0.0 (TID 88, cub1.local, RACK_LOCAL, 1330 bytes)
+16/03/14 17:45:58 INFO TaskSetManager: Finished task 172.0 in stage 0.0 (TID 80) in 4104 ms on cub1.local (81/174)
+16/03/14 17:46:04 INFO TaskSetManager: Starting task 16.0 in stage 0.0 (TID 89, cub1.local, RACK_LOCAL, 1330 bytes)
+16/03/14 17:46:04 INFO TaskSetManager: Finished task 2.0 in stage 0.0 (TID 82) in 6555 ms on cub1.local (82/174)
+16/03/14 17:46:04 INFO TaskSetManager: Starting task 17.0 in stage 0.0 (TID 90, cub0.local, RACK_LOCAL, 1330 bytes)
+16/03/14 17:46:04 INFO TaskSetManager: Finished task 7.0 in stage 0.0 (TID 83) in 6627 ms on cub0.local (83/174)
+16/03/14 17:46:05 INFO TaskSetManager: Starting task 18.0 in stage 0.0 (TID 91, cub1.local, RACK_LOCAL, 1330 bytes)
+16/03/14 17:46:05 INFO TaskSetManager: Finished task 14.0 in stage 0.0 (TID 87) in 6745 ms on cub1.local (84/174)
+16/03/14 17:46:05 INFO TaskSetManager: Starting task 19.0 in stage 0.0 (TID 92, cub0.local, RACK_LOCAL, 1330 bytes)
+16/03/14 17:46:05 INFO TaskSetManager: Finished task 1.0 in stage 0.0 (TID 81) in 7599 ms on cub0.local (85/174)
+16/03/14 17:46:05 INFO TaskSetManager: Starting task 20.0 in stage 0.0 (TID 93, cub0.local, RACK_LOCAL, 1330 bytes)
+16/03/14 17:46:05 INFO TaskSetManager: Finished task 13.0 in stage 0.0 (TID 86) in 7774 ms on cub0.local (86/174)
+16/03/14 17:46:06 INFO TaskSetManager: Starting task 24.0 in stage 0.0 (TID 94, cub1.local, RACK_LOCAL, 1330 bytes)
+16/03/14 17:46:06 INFO TaskSetManager: Finished task 15.0 in stage 0.0 (TID 88) in 7341 ms on cub1.local (87/174)
+16/03/14 17:46:07 INFO TaskSetManager: Starting task 26.0 in stage 0.0 (TID 95, cub0.local, RACK_LOCAL, 1330 bytes)
+16/03/14 17:46:07 INFO TaskSetManager: Finished task 11.0 in stage 0.0 (TID 85) in 9301 ms on cub0.local (88/174)
+16/03/14 17:46:07 INFO TaskSetManager: Starting task 28.0 in stage 0.0 (TID 96, cub1.local, RACK_LOCAL, 1330 bytes)
+16/03/14 17:46:07 INFO TaskSetManager: Finished task 9.0 in stage 0.0 (TID 84) in 9356 ms on cub1.local (89/174)
