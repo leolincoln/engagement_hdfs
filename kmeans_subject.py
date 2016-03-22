@@ -5,7 +5,7 @@ from pyspark.mllib.clustering import KMeans, KMeansModel
 from numpy import array
 from math import sqrt
 import pickle
-subject = 15
+subject = 21
 
 # Evaluate clustering by computing Within Set Sum of Squared Errors
 def error(point, clusters):
@@ -196,10 +196,12 @@ sum_count_point_distance = cluster_point_distance.combineByKey(lambda value:(val
 average_point_distance = sum_count_point_distance.map(lambda (num,(value_sum,count)):(num,value_sum/count)).collect()
 save_cluster_sizes(average_point_distance,'average_point_distance/'+str(subject)+'.csv')
 
+'''
+#Removed because duplicate to save_cluster_sizes
 os.system('rm -rf max_point_distance'+str(subject)+'.dat')
-with open('max_point_distance'+str(subject)+'dat','w') as f:
+with open('max_point_distance'+str(subject)+'.dat','w') as f:
     f.write(str(max_point_distance))
-
+'''
 time_now = time.time()
 
 #cluter centers after calculating kmeans clustering

@@ -4,6 +4,7 @@ from os.path import join,getsize
 from pandas import Series,DataFrame
 import matplotlib.pyplot as plt
 from sklearn import metrics
+from plot_subject import read_subject_sizes
 def get_files(path,template):
     '''
         Args:
@@ -21,8 +22,8 @@ def get_files(path,template):
     return matches
 
 def is_sub_cluster(file_path,template = None):
-    if templte is None:
-        template = 'cluster_centers_subject[0-10]+.csv'
+    if template is None:
+        template = 'cluster_centers_subject\d+_\d+.+'
     pattern = re.compile(template)
     if pattern.match(file_path):
         return True
@@ -40,10 +41,32 @@ def file_path2cluster_number(file_path):
         String of cluster number if sub cluster
         None if not
     '''
+    file_path = os.path.basename(file_path)
     if is_sub_cluster(file_path):
-        return os.path.basename(file_path).split('.')[-2].split('_')[-1]
+        return file_path.split('.')[-2].split('_')[-1]
     else:
         return None
+
+def file_path2cluster_main_number(file_path):
+    '''
+    e.g. cluster_centers/cluster_centers_subject0_40.csv
+    should return 0
+    Args:
+        file_path: the path of file
+    Returns:
+        String of main cluster number if sub cluster
+        None if not
+    '''
+    template = '(.+)(subject)(\d+)(.+)'
+    pattern = re.compile(template)
+    m = pattern.match(file_path)
+    if m:
+        cluster_number = m.groups()[-2]
+        return cluster_number
+    else:
+        return None
+
+
 def read_file(file_path):
     '''
     read in a file and return a pandas dataframe. 
@@ -63,6 +86,7 @@ def read_files(file_paths):
     dfs = []
     for file_path in file_paths:
         data = read_file(file_path)
+        #remove the last None because I put an extra ',' at the end of each line
         data = data[data.columns[:-1]]
         dfs.append(data)
     return pd.concat(dfs)
@@ -78,8 +102,10 @@ if __name__=='__main__':
     print 'getting correlation matrix for subject',subject
     template = 'cluster_centers_subject'+str(subject)+'.*csv'
     file_names = get_files(path,template)
-    data = read_files(file_names) 
+    index_clusternum,data = read_files(file_names) 
+    #obtain 1000*1000 cluster
     result = metrics.pairwise.pairwise_distances(data)
-    plt.matshow(result)
-    plt.colorbar()
-    plt.savefig('test'+str(subject)+'.png')
+    sizes = read_subject_sizes(subject=subject)
+    #plt.matshow(result)
+    #plt.colorbar()
+    #plt.savefig('test'+str(subject)+'.png')

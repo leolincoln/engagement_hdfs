@@ -19,16 +19,17 @@ def read_subject_sizes(subject = subject):
     for f in file_names:
         print 'processing',f
         if f.split('_')[-1]=='subject'+str(subject)+'.csv':
-            frames.append(pd.read_csv(f,header=None))
+            frames.append(pd.read_csv(f,index_col=0,header=None))
         else:
             cluster_number_prefix = f.split('_')[-1].split('.')[0]+'_'
-            new_frame = pd.read_csv(f,header=None)
-            new_frame[0] = cluster_number_prefix+new_frame[0].astype(str)        
+            new_frame = pd.read_csv(f,index_col=0,header=None)
+            new_frame.index = cluster_number_prefix+new_frame.index.astype(str)        
             frames.append(new_frame)      
             print len(frames)
     allframe =  pd.concat(frames)
-    centroids = set([item.split('_')[0] for item in allframe[0].astype(str) if '_' in item])
-    return allframe[~allframe[0].astype(str).isin(centroids)]
+    centroids = set([item.split('_')[0] for item in allframe.index.astype(str) if '_' in item])
+    return allframe
+    #return allframe[~allframe[0].astype(str).isin(centroids)]
 
 if __name__=='__main__':
     print 'subject number:', sys.argv[1]
