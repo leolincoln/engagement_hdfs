@@ -229,13 +229,23 @@ for top_cluster in top_clusters:
     top_model = KMeans.train(top_data, sub_k, maxIterations=100,runs=10, initializationMode="k-means||")
     #top_data_point_distance = top_data.map(lambda point:error_by_center(point,top_model))
     #top_data_point_distance.persist()
-
+    
+    #top wsse
     top_wsse = top_data.map(lambda point: error(point,top_model)).reduce(lambda x, y: x + y)
+    #group top data into different centers
     top_ind = top_data.map(lambda point:top_model.predict(point))
     top_ind.collect()
+    #top_sizes are counts by subject. 
     top_sizes = top_ind.countByValue().items()
+    #save cluster sizes
     save_cluster_sizes(top_sizes,'cluster_sizes/cluster_sizes_subject'+str(subject)+'_'+str(top_cluster)+'.csv')
+    #save cluster centers
     save_cluster_centers(top_model.centers,'cluster_centers/cluster_centers_subject'+str(subject)+'_'+str(top_cluster)+'.csv')
+    #copied from above for max point to center distance. 
+    cluster_point_distance = top_data.map(lambda point:error_by_center(point,top_model))
+    #no need to persist because its different for each top cluster
+    max_point_distance = cluster_point_distance.reduceByKey(lambda x,y:max(x,y)).collect()
+    save_cluster_sizes(max_point_distance,'max_point_distance/'+str(subject)+'_'+str(top_cluster)+'.csv')
     print 'finished top cluster',top_cluster
 
     

@@ -23,14 +23,29 @@ def get_files(path,template):
 
 def is_sub_cluster(file_path,template = None):
     if template is None:
-        template = 'cluster_centers_subject\d+_\d+.+'
+        template = '.+\d+_\d+\..+'
     pattern = re.compile(template)
     if pattern.match(file_path):
         return True
     else:
         return False
+def get_cluster_name(file_path):
+    '''
+    we say main# is the main cluster number,
+    we also say sub# is the sub cluster number, 
+    returns: 
+    main#_sub#_0-49 if sub# is present. 
+    main#_0=499 if no sub#
+    '''
+    if is_sub_cluster(file_path):
+        main_num = main_number(file_path)
+        sub_num = sub_number(file_path)
+        return [main_num+'_'+sub_num+'_'+str(item) for item in range(50)]
+    else:
+        main_num = main_number(file_path)
+        return [main_num +'_'+str(item) for item in range(500)]
 
-def file_path2cluster_number(file_path):
+def sub_number(file_path):
     '''
     e.g.cluster_centers/cluster_centers_subject0_40.csv
     should return 40
@@ -47,7 +62,7 @@ def file_path2cluster_number(file_path):
     else:
         return None
 
-def file_path2cluster_main_number(file_path):
+def main_number(file_path):
     '''
     e.g. cluster_centers/cluster_centers_subject0_40.csv
     should return 0
@@ -102,10 +117,14 @@ if __name__=='__main__':
     print 'getting correlation matrix for subject',subject
     template = 'cluster_centers_subject'+str(subject)+'.*csv'
     file_names = get_files(path,template)
-    index_clusternum,data = read_files(file_names) 
+    data = read_files(file_names) 
     #obtain 1000*1000 cluster
     result = metrics.pairwise.pairwise_distances(data)
-    sizes = read_subject_sizes(subject=subject)
+    cluster_names = []
+    for file_name in file_names:
+        cluster_names.extend(get_cluster_name(file_name))
+    print cluster_names
+    #sizes = read_subject_sizes(subject=subject)
     #plt.matshow(result)
     #plt.colorbar()
     #plt.savefig('test'+str(subject)+'.png')
