@@ -213,8 +213,11 @@ time_now = time.time()
 cluster_ind = parsedData.map(lambda point:clusters.predict(point))
 cluster_ind.collect()
 cluster_sizes = cluster_ind.countByValue().items()
-
+#remove cluster size objects from cluster_sizes folder. 
+os.system('rm -rf cluster_sizes/cluster_sizes_subject'+str(subject)+'*.csv')
 save_cluster_sizes(cluster_sizes,'cluster_sizes/cluster_sizes_subject'+str(subject)+'.csv')
+#remove cluster_centers objects from cluster_centers folder. before we rewrite them
+os.system('rm -rf cluster_centers/cluster_centers_subject'+str(sbuject)+'*.csv')
 save_cluster_centers(clusters.centers,'cluster_centers/cluster_centers_subject'+str(subject)+'.csv')
 
 #get top clusters to split again
