@@ -39,13 +39,13 @@ def get_cluster_name(file_path):
     '''
     if is_sub_cluster(file_path):
         main_num = main_number(file_path)
-        sub_num = sub_number(file_path)
-        return [main_num+'_'+sub_num+'_'+str(item) for item in range(50)]
+        sub_nums = sub_numbers(file_path)
+        return [sub_nums+'_'+str(item) for item in range(50)]
     else:
         main_num = main_number(file_path)
         return [main_num +'_'+str(item) for item in range(500)]
 
-def sub_number(file_path):
+def sub_numbers(file_path):
     '''
     e.g.cluster_centers/cluster_centers_subject0_40.csv
     should return 40
@@ -56,12 +56,14 @@ def sub_number(file_path):
         String of cluster number if sub cluster
         None if not
     '''
-    file_path = os.path.basename(file_path)
-    if is_sub_cluster(file_path):
-        return file_path.split('.')[-2].split('_')[-1]
+    template = '(.*)(\d+_\d+)(.+)'
+    pattern = re.compile(template)
+    m = pattern.match(file_path)
+    if m:
+        cluster_number = m.groups()[-2]
+        return cluster_number
     else:
         return None
-
 def main_number(file_path):
     '''
     e.g. cluster_centers/cluster_centers_subject0_40.csv
@@ -72,7 +74,7 @@ def main_number(file_path):
         String of main cluster number if sub cluster
         None if not
     '''
-    template = '(.+)(subject)(\d+)(.+)'
+    template = '(.*)(\d+)(.+)'
     pattern = re.compile(template)
     m = pattern.match(file_path)
     if m:
@@ -80,7 +82,6 @@ def main_number(file_path):
         return cluster_number
     else:
         return None
-
 
 def read_file(file_path):
     '''
@@ -91,7 +92,7 @@ def read_file(file_path):
     data = pd.read_csv(file_path,header=None)
     return data
 
-def read_files(file_paths):
+def read_files_center(file_paths):
     '''
     Args:
         file_paths: a list of string of file path. 
@@ -105,26 +106,49 @@ def read_files(file_paths):
         data = data[data.columns[:-1]]
         dfs.append(data)
     return pd.concat(dfs)
+def read_files_max(file_paths):
+    '''
+    Args:
+        file_paths: a list of string of file path. 
+    Return:
+        a pandas dataframe of all file_paths
+    '''
+    dfs = []
+    for file_path in file_paths:
+        data = pd.read_csv(file_path,header=None,index_col=0)
+        if is_sub_cluster(file_path):
+            prefix = sub_numbers(file_path)+'_' 
+        else:
+            prefix = main_number(file_path)+'_'
+        data.index = prefix+data.index.astype(str)
+        dfs.append(data)
+    return pd.concat(dfs)
 
 if __name__=='__main__':
-    if len(sys.argv)<3:
+    if len(sys.argv)<4:
         print 'ERROR: no subject number supplied'
-        print 'Usage: python corr_matrix_subject.py subject# cluster_center_path'
-        print 'e.g. python corr_matrix_subject.py 0 cluster_centers/'
+        print 'Usage: python corr_matrix_subject.py subject# cluster_center_path max_dis_path'
+        print 'e.g. python corr_matrix_subject.py 0 cluster_centers/ max_point_distance/'
         sys.exit(1)
     subject = sys.argv[1]
     path = sys.argv[2]
     print 'getting correlation matrix for subject',subject
     template = 'cluster_centers_subject'+str(subject)+'.*csv'
     file_names = get_files(path,template)
-    data = read_files(file_names) 
+    data = read_files_center(file_names) 
     #obtain 1000*1000 cluster
     result = metrics.pairwise.pairwise_distances(data)
     cluster_names = []
     for file_name in file_names:
         cluster_names.extend(get_cluster_name(file_name))
-    print cluster_names
-    #sizes = read_subject_sizes(subject=subject)
-    #plt.matshow(result)
-    #plt.colorbar()
-    #plt.savefig('test'+str(subject)+'.png')
+    template_max = str(subject)+'.*csv'
+    file_names_max = get_files(sys.argv[3],template_max)
+    data_max = read_files_max(file_names_max)
+    print file_names_max
+    for i in range(len(result)):
+        for j in range(len(result[0])):
+            result[i][j]+=data_max.ix[cluster_names[i]]
+            result[i][j]+=data_max.ix[cluster_names[j]]
+    plt.matshow(result)
+    plt.colorbar()
+    plt.savefig('test'+str(subject)+'.png')
