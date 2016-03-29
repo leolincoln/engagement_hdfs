@@ -5,6 +5,7 @@ from pandas import Series,DataFrame
 import matplotlib.pyplot as plt
 from sklearn import metrics
 from plot_subject import read_subject_sizes
+import copy
 def get_files(path,template):
     '''
         Args:
@@ -138,6 +139,7 @@ if __name__=='__main__':
     data = read_files_center(file_names) 
     #obtain 1000*1000 cluster
     result = metrics.pairwise.pairwise_distances(data)
+    result2 = copy.copy(result)
     cluster_names = []
     for file_name in file_names:
         cluster_names.extend(get_cluster_name(file_name))
@@ -148,7 +150,15 @@ if __name__=='__main__':
     for i in range(len(result)):
         for j in range(len(result[0])):
             result[i][j]+=data_max.ix[cluster_names[i]]
+            result2[i][j]-=data_max.ix[cluster_names[i]]
             result[i][j]+=data_max.ix[cluster_names[j]]
+            result2[i][j]-=data_max.ix[cluster_names[j]]
     plt.matshow(result)
     plt.colorbar()
-    plt.savefig('test'+str(subject)+'.png')
+    plt.savefig('pluses'+str(subject)+'.png')
+
+    plt.cla()
+    plt.matshow(result2)
+    plt.colorbar()
+    plt.savefig('minuses'+str(subject)+'.png')
+    
