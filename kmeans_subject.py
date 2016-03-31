@@ -5,7 +5,7 @@ from pyspark.mllib.clustering import KMeans, KMeansModel
 from numpy import array
 from math import sqrt
 import pickle
-subject = 15
+subject = 13
 
 # Evaluate clustering by computing Within Set Sum of Squared Errors
 def error(point, clusters):
