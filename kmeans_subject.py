@@ -1,3 +1,7 @@
+'''
+to run this program, do something like this: ./runYarn.bash 'subject3' kmeans_subject.py 2>logs/kmeans_subject3.log where you have to specify subject number inside the program. 
+I know this needs improving, but its working for now. I will fix it once we have all data. 
+'''
 from pyspark import SparkContext
 import os,itertools,time,math
 import numpy as np
@@ -5,7 +9,8 @@ from pyspark.mllib.clustering import KMeans, KMeansModel
 from numpy import array
 from math import sqrt
 import pickle
-subject = 5
+subject = 1
+
 
 # Evaluate clustering by computing Within Set Sum of Squared Errors
 def error(point, clusters):
