@@ -1,6 +1,6 @@
 #!/bin/bash 
-COUNTER=7
-while [  $COUNTER -lt 21  ]; do
+COUNTER=1
+while [  $COUNTER -lt 22  ]; do
     echo The counter is $COUNTER
     python corr_matrix_subject.py $COUNTER cluster_centers/ max_point_distance/
     wait
