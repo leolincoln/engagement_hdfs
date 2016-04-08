@@ -1,0 +1,37 @@
+The counter is 7
+getting correlation matrix for subject 7
+['max_point_distance/7.csv', 'max_point_distance/7_157.csv', 'max_point_distance/7_161.csv', 'max_point_distance/7_182.csv', 'max_point_distance/7_30.csv', 'max_point_distance/7_304.csv', 'max_point_distance/7_313.csv', 'max_point_distance/7_37.csv', 'max_point_distance/7_400.csv', 'max_point_distance/7_422.csv', 'max_point_distance/7_455.csv']
+count1 15546
+count2 273
+count3 0
+The counter is 8
+getting correlation matrix for subject 8
+['max_point_distance/8.csv', 'max_point_distance/8_166.csv', 'max_point_distance/8_242.csv', 'max_point_distance/8_26.csv', 'max_point_distance/8_278.csv', 'max_point_distance/8_28.csv', 'max_point_distance/8_337.csv', 'max_point_distance/8_364.csv', 'max_point_distance/8_408.csv', 'max_point_distance/8_472.csv', 'max_point_distance/8_56.csv']
+count1 44598
+count2 264
+count3 0
+The counter is 9
+getting correlation matrix for subject 9
+['max_point_distance/9.csv', 'max_point_distance/9_114.csv', 'max_point_distance/9_207.csv', 'max_point_distance/9_224.csv', 'max_point_distance/9_23.csv', 'max_point_distance/9_258.csv', 'max_point_distance/9_31.csv', 'max_point_distance/9_433.csv', 'max_point_distance/9_470.csv', 'max_point_distance/9_72.csv', 'max_point_distance/9_75.csv']
+count1 29498
+count2 185
+count3 0
+The counter is 10
+getting correlation matrix for subject 10
+['max_point_distance/10.csv', 'max_point_distance/10_106.csv', 'max_point_distance/10_17.csv', 'max_point_distance/10_211.csv', 'max_point_distance/10_284.csv', 'max_point_distance/10_297.csv', 'max_point_distance/10_316.csv', 'max_point_distance/10_374.csv', 'max_point_distance/10_430.csv', 'max_point_distance/10_454.csv', 'max_point_distance/10_473.csv']
+count1 30774
+count2 169
+count3 4
+The counter is 11
+getting correlation matrix for subject 11
+['max_point_distance/11.csv', 'max_point_distance/11_144.csv', 'max_point_distance/11_179.csv', 'max_point_distance/11_311.csv', 'max_point_distance/11_319.csv', 'max_point_distance/11_345.csv', 'max_point_distance/11_41.csv', 'max_point_distance/11_426.csv', 'max_point_distance/11_5.csv', 'max_point_distance/11_79.csv', 'max_point_distance/11_99.csv']
+count1 63890
+count2 1042
+count3 6
+The counter is 12
+getting correlation matrix for subject 12
+['max_point_distance/12.csv', 'max_point_distance/12_176.csv', 'max_point_distance/12_187.csv', 'max_point_distance/12_194.csv', 'max_point_distance/12_291.csv', 'max_point_distance/12_365.csv', 'max_point_distance/12_390.csv', 'max_point_distance/12_427.csv', 'max_point_distance/12_485.csv', 'max_point_distance/12_59.csv', 'max_point_distance/12_62.csv']
+count1 64824
+count2 339
+count3 0
+The counter is 13
