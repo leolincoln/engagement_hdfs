@@ -144,33 +144,36 @@ if __name__=='__main__':
     cluster_names = []
     for file_name in file_names:
         cluster_names.extend(get_cluster_name(file_name))
-    print cluster_names
     template_max = str(subject)+'.*csv'
     file_names_max = get_files(sys.argv[3],template_max)
     data_max = read_files_max(file_names_max)
-    print file_names_max
     count1 = 0
     count2 = 0
     count3 = 0
     top_list = get_top(read_size(subject = subject))
+    top_list = list(top_list)
+    cluster_names = list(cluster_names)
+    #print 'original cluster names',len(cluster_names)
+    #print 'top list length',len(top_list)
+    #print 'cluster names - top list',len(set(cluster_names)-set(top_list))
     for i in range(len(result)):
         for j in range(len(result[0])):
             result[i][j]+=data_max.ix[cluster_names[i]]
             result2[i][j]-=data_max.ix[cluster_names[i]]
             result[i][j]+=data_max.ix[cluster_names[j]]
             result2[i][j]-=data_max.ix[cluster_names[j]]
-            #count of values on the left that are larger than 0.000001
-            if cluster_names[i] not in top_list or cluster_names[j] not in top_list:
-                continue
-            if result2[i][j]>0.000001:
-                count1 +=1 
-            #count of values on the right that are smaller than 1.34.
-            if result[i][j]<1.34:
-                count2 +=1
-            #the count of values on the left that are larger than 1.48.
-            if result2[i][j]>1.48:
-                count3+=1
-    print subject,count1,',',count2,',',count3
+            if cluster_names[i] in top_list and cluster_names[j] in top_list:
+                #print 'both i and j are in top list',i,j
+                #count of values on the left that are larger than 0.000001
+                if result2[i][j]>0.000001:
+                    count1 +=1 
+                #count of values on the right that are smaller than 1.34.
+                if result[i][j]<1.34:
+                    count2 +=1
+                #the count of values on the left that are larger than 1.48.
+                if result2[i][j]>1.48:
+                    count3+=1
+    print subject,',',count1,',',count2,',',count3
     '''
     plt.matshow(result)
     plt.colorbar()
