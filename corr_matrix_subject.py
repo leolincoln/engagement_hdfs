@@ -4,7 +4,8 @@ from os.path import join,getsize
 from pandas import Series,DataFrame
 #import matplotlib.pyplot as plt
 from sklearn import metrics
-#from plot_subject import read_subject_sizes
+from plot_subject import read_subject_sizes as read_size
+from plot_subject import get_top_500_sizes as get_top
 import copy
 def get_files(path,template):
     '''
@@ -49,7 +50,7 @@ def get_cluster_name(file_path):
 def sub_numbers(file_path):
     '''
     e.g.cluster_centers/cluster_centers_subject0_40.csv
-    should return 40
+    should return 0_40
     getting the cluster number
     Args:
         file_path: the path of file
@@ -143,6 +144,7 @@ if __name__=='__main__':
     cluster_names = []
     for file_name in file_names:
         cluster_names.extend(get_cluster_name(file_name))
+    print cluster_names
     template_max = str(subject)+'.*csv'
     file_names_max = get_files(sys.argv[3],template_max)
     data_max = read_files_max(file_names_max)
@@ -150,6 +152,7 @@ if __name__=='__main__':
     count1 = 0
     count2 = 0
     count3 = 0
+    top_list = get_top(read_size(subject = subject))
     for i in range(len(result)):
         for j in range(len(result[0])):
             result[i][j]+=data_max.ix[cluster_names[i]]
@@ -157,6 +160,8 @@ if __name__=='__main__':
             result[i][j]+=data_max.ix[cluster_names[j]]
             result2[i][j]-=data_max.ix[cluster_names[j]]
             #count of values on the left that are larger than 0.000001
+            if cluster_names[i] not in top_list or cluster_names[j] not in top_list:
+                continue
             if result2[i][j]>0.000001:
                 count1 +=1 
             #count of values on the right that are smaller than 1.34.
@@ -165,9 +170,7 @@ if __name__=='__main__':
             #the count of values on the left that are larger than 1.48.
             if result2[i][j]>1.48:
                 count3+=1
-    print 'count1',count1
-    print 'count2',count2
-    print 'count3',count3
+    print subject,count1,',',count2,',',count3
     '''
     plt.matshow(result)
     plt.colorbar()
