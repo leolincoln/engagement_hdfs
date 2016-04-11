@@ -14,11 +14,15 @@ def find_match(path,pattern):
     return matches
 
 def read_subject_sizes(subject = subject):
-    file_names = find_match('cluster_sizes','cluster_sizes_subject'+str(subject)+'*.csv')
+    #TODO
+    #cheange the subject so that it wont check for subject 11 for subject 1
+    file_names = find_match('cluster_sizes','cluster_sizes_subject'+str(subject)+'_*.csv')
     frames = []
     for f in file_names:
         print 'processing',f
-        if f.split('_')[-1]=='subject'+str(subject)+'.csv':
+        #because the upper clusters are somethingsubjectnumber_.csv
+        #we can see only .csv at the last split
+        if f.split('_')[-1]=='.csv':
             new_frame = pd.read_csv(f,index_col=0,header=None)
             prefix = str(subject)+'_'
             new_frame.index = prefix+new_frame.index.astype(str)
