@@ -9,7 +9,7 @@ from pyspark.mllib.clustering import KMeans, KMeansModel
 from numpy import array
 from math import sqrt
 import pickle
-subject = 1
+subject = 2
 
 
 # Evaluate clustering by computing Within Set Sum of Squared Errors

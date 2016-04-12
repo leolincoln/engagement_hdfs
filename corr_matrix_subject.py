@@ -59,7 +59,7 @@ def sub_numbers(file_path):
         String of cluster number if sub cluster
         None if not
     '''
-    template = '(.*)(\d+_\d+)(.+)'
+    template = '([^0-9]*)(\d+_\d+)(.+)'
     pattern = re.compile(template)
     m = pattern.match(file_path)
     if m:
@@ -77,7 +77,7 @@ def main_number(file_path):
         String of main cluster number if sub cluster
         None if not
     '''
-    template = '(.*)(\d+)(.+)'
+    template = '([^0-9]*)(\d+)(_.+)'
     pattern = re.compile(template)
     m = pattern.match(file_path)
     if m:
@@ -138,7 +138,7 @@ if __name__=='__main__':
     #print 'getting correlation matrix for subject',subject
     template = 'cluster_centers_subject'+str(subject)+'_.*csv'
     file_names = get_files(path,template)
-    data = read_files_center(file_names) 
+    data = np.array(read_files_center(file_names))
     #obtain 1000*1000 cluster
     top_list = get_top(read_size(subject = subject))
     top_list = list(top_list)
