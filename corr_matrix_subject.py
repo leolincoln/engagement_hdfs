@@ -1,3 +1,4 @@
+import numpy as np
 import sys,os,pandas,re
 import pandas as pd
 from os.path import join,getsize
@@ -135,23 +136,56 @@ if __name__=='__main__':
     subject = sys.argv[1]
     path = sys.argv[2]
     #print 'getting correlation matrix for subject',subject
-    template = 'cluster_centers_subject'+str(subject)+'.*csv'
+    template = 'cluster_centers_subject'+str(subject)+'_.*csv'
     file_names = get_files(path,template)
     data = read_files_center(file_names) 
     #obtain 1000*1000 cluster
     top_list = get_top(read_size(subject = subject))
-    result = metrics.pairwise.pairwise_distances(data)
-    result2 = copy.copy(result)
+    top_list = list(top_list)
     cluster_names = []
     for file_name in file_names:
         cluster_names.extend(get_cluster_name(file_name))
-    template_max = str(subject)+'.*csv'
+    template_max = str(subject)+'_.*csv'
     file_names_max = get_files(sys.argv[3],template_max)
     data_max = read_files_max(file_names_max)
+    #result for top 500 clusters
+    r500 = [[0]*500]*500
+    r500_2 = [[0]*500]*500
     count1 = 0
     count2 = 0
     count3 = 0
-    top_list = list(top_list)
+    for i in xrange(len(r500)):
+        for j in xrange(len(r500)):
+            #first get the pairwise enclidean distance
+            name_i = top_list[i]
+            name_j = top_list[j]
+            data_i = cluster_names.index(name_i)
+            data_j = cluster_names.index(name_j)
+            r500[i][j] = float(np.sqrt(np.sum((data[data_i]-data[data_j])**2))+data_max.ix[name_i]+data_max.ix[name_j])
+            r500_2[i][j] = float(np.sqrt(np.sum((data[data_i]-data[data_j])**2))-data_max.ix[name_i]-data_max.ix[name_j])
+            if r500_2[i][j]>0.000001:
+                count1 += 1 
+            #count of values on the right that are smaller than 1.34.
+            if r500[i][j]<1.34:
+                count2 += 1
+            #the count of values on the left that are larger than 1.48.
+            if r500_2[i][j]>1.48:
+                count3 += 1
+    print subject,',',count1,',',count2,',',count3
+    plt.matshow(r500)
+    plt.colorbar()
+    plt.savefig('pluses'+str(subject)+'.png')
+
+    plt.cla()
+    plt.matshow(r500_2)
+    plt.colorbar()
+    plt.savefig('minuses'+str(subject)+'.png')
+    '''
+    result = metrics.pairwise.pairwise_distances(data)
+    result2 = copy.copy(result)
+    count1 = 0
+    count2 = 0
+    count3 = 0
     cluster_names = list(cluster_names)
     
     #show results for top 500 clusters
@@ -188,3 +222,4 @@ if __name__=='__main__':
     plt.matshow(result2)
     plt.colorbar()
     plt.savefig('minuses'+str(subject)+'.png')
+    '''
