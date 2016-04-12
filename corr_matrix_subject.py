@@ -2,7 +2,7 @@ import sys,os,pandas,re
 import pandas as pd
 from os.path import join,getsize
 from pandas import Series,DataFrame
-#import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 from sklearn import metrics
 from plot_subject import read_subject_sizes as read_size
 from plot_subject import get_top_500_sizes as get_top
@@ -139,6 +139,7 @@ if __name__=='__main__':
     file_names = get_files(path,template)
     data = read_files_center(file_names) 
     #obtain 1000*1000 cluster
+    top_list = get_top(read_size(subject = subject))
     result = metrics.pairwise.pairwise_distances(data)
     result2 = copy.copy(result)
     cluster_names = []
@@ -150,9 +151,11 @@ if __name__=='__main__':
     count1 = 0
     count2 = 0
     count3 = 0
-    top_list = get_top(read_size(subject = subject))
     top_list = list(top_list)
     cluster_names = list(cluster_names)
+    
+    #show results for top 500 clusters
+
     #print 'original cluster names',len(cluster_names)
     #print 'top list length',len(top_list)
     #print 'cluster names - top list',len(set(cluster_names)-set(top_list))
@@ -173,8 +176,10 @@ if __name__=='__main__':
                 #the count of values on the left that are larger than 1.48.
                 if result2[i][j]>1.48:
                     count3+=1
+            else:
+                result[i][j] = 0
+                result2[i][j]=2
     print subject,',',count1,',',count2,',',count3
-    '''
     plt.matshow(result)
     plt.colorbar()
     plt.savefig('pluses'+str(subject)+'.png')
@@ -183,4 +188,3 @@ if __name__=='__main__':
     plt.matshow(result2)
     plt.colorbar()
     plt.savefig('minuses'+str(subject)+'.png')
-    '''
