@@ -1,1 +1,69 @@
 The counter is 0
+getting correlation matrix for subject 0
+processing cluster_sizes/cluster_sizes_subject0_156.csv
+1
+processing cluster_sizes/cluster_sizes_subject0_52.csv
+2
+processing cluster_sizes/cluster_sizes_subject0_496.csv
+3
+processing cluster_sizes/cluster_sizes_subject0_252.csv
+4
+processing cluster_sizes/cluster_sizes_subject0_.csv
+processing cluster_sizes/cluster_sizes_subject0_138.csv
+6
+processing cluster_sizes/cluster_sizes_subject0_46.csv
+7
+processing cluster_sizes/cluster_sizes_subject0_320.csv
+8
+processing cluster_sizes/cluster_sizes_subject0_21.csv
+9
+processing cluster_sizes/cluster_sizes_subject0_212.csv
+10
+processing cluster_sizes/cluster_sizes_subject0_362.csv
+11
+0 , 0 , 0 , 0
+The counter is 1
+processing cluster_sizes/cluster_sizes_subject1_1.csv
+1
+processing cluster_sizes/cluster_sizes_subject1_190.csv
+2
+processing cluster_sizes/cluster_sizes_subject1_271.csv
+3
+processing cluster_sizes/cluster_sizes_subject1_8.csv
+4
+processing cluster_sizes/cluster_sizes_subject1_499.csv
+5
+processing cluster_sizes/cluster_sizes_subject1_266.csv
+6
+processing cluster_sizes/cluster_sizes_subject1_117.csv
+7
+processing cluster_sizes/cluster_sizes_subject1_25.csv
+8
+processing cluster_sizes/cluster_sizes_subject1_60.csv
+9
+processing cluster_sizes/cluster_sizes_subject1_213.csv
+10
+processing cluster_sizes/cluster_sizes_subject1_.csv
+The counter is 2
+processing cluster_sizes/cluster_sizes_subject2_214.csv
+1
+processing cluster_sizes/cluster_sizes_subject2_238.csv
+2
+processing cluster_sizes/cluster_sizes_subject2_335.csv
+3
+processing cluster_sizes/cluster_sizes_subject2_435.csv
+4
+processing cluster_sizes/cluster_sizes_subject2_437.csv
+5
+processing cluster_sizes/cluster_sizes_subject2_366.csv
+6
+processing cluster_sizes/cluster_sizes_subject2_170.csv
+7
+processing cluster_sizes/cluster_sizes_subject2_421.csv
+8
+processing cluster_sizes/cluster_sizes_subject2_247.csv
+9
+processing cluster_sizes/cluster_sizes_subject2_212.csv
+10
+processing cluster_sizes/cluster_sizes_subject2_.csv
+The counter is 3
