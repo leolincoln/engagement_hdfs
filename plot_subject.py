@@ -14,7 +14,7 @@ def find_match(path,pattern):
     return matches
 
 def read_subject_sizes(subject = subject):
-    #TODO
+    #TODO FIXED
     #cheange the subject so that it wont check for subject 11 for subject 1
     file_names = find_match('cluster_sizes','cluster_sizes_subject'+str(subject)+'_*.csv')
     frames = []
@@ -35,8 +35,8 @@ def read_subject_sizes(subject = subject):
             print len(frames)
     allframe =  pd.concat(frames)
     centroids = set([item.split('_')[0] for item in allframe.index.astype(str) if '_' in item])
-    return allframe
-    #return allframe[~allframe[0].astype(str).isin(centroids)]
+    #return allframe
+    return allframe[~allframe[0].astype(str).isin(centroids)]
 def get_top_500_sizes(df):
     '''
     supposed the df was fed by read_subject_sizes where

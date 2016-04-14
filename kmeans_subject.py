@@ -2,6 +2,7 @@
 to run this program, do something like this: ./runYarn.bash 'subject3' kmeans_subject.py 2>logs/kmeans_subject3.log where you have to specify subject number inside the program. 
 I know this needs improving, but its working for now. I will fix it once we have all data. 
 '''
+#./runYarn.bash 'subject1 fixed' kmeans_subject.py 2>logs/kmeans_subject1.log
 from pyspark import SparkContext
 import os,itertools,time,math
 import numpy as np
@@ -9,7 +10,7 @@ from pyspark.mllib.clustering import KMeans, KMeansModel
 from numpy import array
 from math import sqrt
 import pickle
-subject = 2
+
 
 
 # Evaluate clustering by computing Within Set Sum of Squared Errors
@@ -65,7 +66,7 @@ def xyz_feature(xyz_value):
     merged = list(itertools.chain.from_iterable(features))
     return (xyz_key,merged) 
 
-def xyz_subject_feature(xyz_value,subject = subject):
+def xyz_subject_feature(xyz_value,subject):
     '''
     Used for reducing
     Can be improved.
@@ -99,7 +100,7 @@ def value_pairs(line):
     timeseries = values[4]
     return ((x,y,z),{subject:timeseries})
 
-def xyz_group(xyz1,xyz2,subject=subject):
+def xyz_group(xyz1,xyz2,subject):
     '''
     Update xyz1 and xyz2 if they have the same xyz_key
     Args:
@@ -130,136 +131,142 @@ def get_eud(values):
 def filter_0(line):
     array = [float(item) for item in line.split(';')[3]]
     return sum(array)!=0
+def main(subject):
+    time_now = time.time()
+    sc = SparkContext()
+    hdfsPrefix = 'hdfs://wolf.iems.northwestern.edu/user/huser54/'
 
-time_now = time.time()
-sc = SparkContext()
-hdfsPrefix = 'hdfs://wolf.iems.northwestern.edu/user/huser54/'
+    file_path1 = 'engagement/'
+    file_path2 = 'engagementsample/'
+    #TODO change the following parameters
+    k0 = 500
+    #k0 = 10
+    sub_num = 10
+    #sub_num = 1
+    sub_k = 50
+    #sub_k = 5
+    #TODO change the file_path#,file_path1 is real data, file_path2 is sample data
+    lines = sc.textFile(hdfsPrefix+file_path1)
+    #map the values to xyz string -> dictionary of subjects with time series. 
+    values = lines.map(value_pairs)
+    print 'values obtained'
+    #print values.first()
+    #print 'value obtain time:',time.time()-time_now
+    time_old = time.time()
 
-file_path1 = 'engagement/'
-file_path2 = 'engagementsample/'
-#TODO change the following parameters
-k0 = 500
-#k0 = 10
-sub_num = 10
-#sub_num = 1
-sub_k = 50
-#sub_k = 5
-#TODO change the file_path#,file_path1 is real data, file_path2 is sample data
-lines = sc.textFile(hdfsPrefix+file_path1)
-#map the values to xyz string -> dictionary of subjects with time series. 
-values = lines.map(value_pairs)
-print 'values obtained'
-#print values.first()
-#print 'value obtain time:',time.time()-time_now
-time_old = time.time()
+    #group by key. Using reduce. Because groupby is not recommended in spark documentation
+    groups = values.reduceByKey(lambda x,y:xyz_group(x,y,subject))
+    print 'groups finished'
+    #print groups.first()
+    #print 'group obtain time:',time.time()-time_now
+    time_now = time.time()
 
-#group by key. Using reduce. Because groupby is not recommended in spark documentation
-groups = values.reduceByKey(xyz_group)
-print 'groups finished'
-#print groups.first()
-#print 'group obtain time:',time.time()-time_now
-time_now = time.time()
+    #map the groups to xyz -> array, where array is 0-22 subject points. 
+    feature_groups = groups.map(lambda x:xyz_subject_feature(x,subject))
+    print 'feature group'
+    #print feature_groups.first()
+    #print 'feature obtain time:',time.time()-time_now
+    time_now = time.time()
 
-#map the groups to xyz -> array, where array is 0-22 subject points. 
-feature_groups = groups.map(xyz_subject_feature)
-print 'feature group'
-#print feature_groups.first()
-#print 'feature obtain time:',time.time()-time_now
-time_now = time.time()
-
-parsedData = feature_groups.map(lambda x:x[1])
-parsedData.cache()
-print 'parsed data'
+    parsedData = feature_groups.map(lambda x:x[1])
+    parsedData.cache()
+    print 'parsed data'
 
 
 
-#print parsedData.first()
-#print 'parsed data obtain time:',time.time()-time_now
-time_now = time.time()
-#now we have xyz -> group of features
-#and we are ready to cluster. 
-# Build the model (cluster the data)
-#document states:
-#classmethod train(rdd, k, maxIterations=100, runs=1, initializationMode='k-means||', seed=None, initializationSteps=5, epsilon=0.0001,initialModel=None)
-clusters = KMeans.train(parsedData, k0, maxIterations=100,runs=10, initializationMode="k-means||")
-print 'cluster obtain time:',time.time()-time_now
-time_now = time.time()
+    #print parsedData.first()
+    #print 'parsed data obtain time:',time.time()-time_now
+    time_now = time.time()
+    #now we have xyz -> group of features
+    #and we are ready to cluster. 
+    # Build the model (cluster the data)
+    #document states:
+    #classmethod train(rdd, k, maxIterations=100, runs=1, initializationMode='k-means||', seed=None, initializationSteps=5, epsilon=0.0001,initialModel=None)
+    clusters = KMeans.train(parsedData, k0, maxIterations=100,runs=10, initializationMode="k-means||")
+    print 'cluster obtain time:',time.time()-time_now
+    time_now = time.time()
 
-WSSSE = parsedData.map(lambda point: error(point,clusters)).reduce(lambda x, y: x + y)
-os.system('rm -rf WSSE_subject'+str(subject)+'.dat')
-with open('WSSEs/WSSE_subject'+str(subject)+'.dat','w') as f:
-    f.write(str(WSSSE))
+    WSSSE = parsedData.map(lambda point: error(point,clusters)).reduce(lambda x, y: x + y)
+    os.system('rm -rf WSSE_subject'+str(subject)+'.dat')
+    with open('WSSEs/WSSE_subject'+str(subject)+'.dat','w') as f:
+        f.write(str(WSSSE))
 
-cluster_point_distance = parsedData.map(lambda point:error_by_center(point,clusters))
-cluster_point_distance.persist()
+    cluster_point_distance = parsedData.map(lambda point:error_by_center(point,clusters))
+    cluster_point_distance.persist()
 
-max_point_distance = cluster_point_distance.reduceByKey(lambda x,y:max(x,y)).collect()
-save_cluster_sizes(max_point_distance,'max_point_distance/'+str(subject)+'_.csv')
-os.system('rm -rf max_point_distance/'+str(subject)+'_*.csv')
-
-sum_count_point_distance = cluster_point_distance.combineByKey(lambda value:(value,1.0),lambda x,value:(x[0]+value,x[1]+1), lambda x,y:(x[0]+y[0],x[1]+y[1]))
-
-average_point_distance = sum_count_point_distance.map(lambda (num,(value_sum,count)):(num,value_sum/count)).collect()
-save_cluster_sizes(average_point_distance,'average_point_distance/'+str(subject)+'_.csv')
-'''
-#Removed because duplicate to save_cluster_sizes
-os.system('rm -rf max_point_distance'+str(subject)+'.dat')
-with open('max_point_distance'+str(subject)+'.dat','w') as f:
-    f.write(str(max_point_distance))
-'''
-time_now = time.time()
-
-#cluter centers after calculating kmeans clustering
-#clusterCenters = sc.parallelize(clusters.clusterCenters)
-
-#we dont need to clear hdfs system for now
-#print 'clearing hdfs system'
-#os.system('hdfs dfs -rm -r -f '+hdfsPrefix+'clusterCenters')
-cluster_ind = parsedData.map(lambda point:clusters.predict(point))
-cluster_ind.collect()
-cluster_sizes = cluster_ind.countByValue().items()
-#remove cluster size objects from cluster_sizes folder. 
-os.system('rm -rf cluster_sizes/cluster_sizes_subject'+str(subject)+'_*.csv')
-save_cluster_sizes(cluster_sizes,'cluster_sizes/cluster_sizes_subject'+str(subject)+'_.csv')
-#remove cluster_centers objects from cluster_centers folder. before we rewrite them
-os.system('rm -rf cluster_centers/cluster_centers_subject'+str(subject)+'_*.csv')
-save_cluster_centers(clusters.centers,'cluster_centers/cluster_centers_subject'+str(subject)+'_.csv')
-
-#get top clusters to split again
-top_clusters = [item[0] for item in sorted(cluster_sizes,key=lambda x:x[1],reverse=True)[0:sub_num]]
-
-#now we got the top 10 clusters. For each cluster, we will split 50 again. 
-for top_cluster in top_clusters:
-    top_data = parsedData.filter(lambda point:clusters.predict(point)==top_cluster)
-
-    #now temp_data has all filtered by top_cluster. 
-    #Now we are going to cluster it. 
-    top_model = KMeans.train(top_data, sub_k, maxIterations=100,runs=10, initializationMode="k-means||")
-    #top_data_point_distance = top_data.map(lambda point:error_by_center(point,top_model))
-    #top_data_point_distance.persist()
-    
-    #top wsse
-    top_wsse = top_data.map(lambda point: error(point,top_model)).reduce(lambda x, y: x + y)
-    #group top data into different centers
-    top_ind = top_data.map(lambda point:top_model.predict(point))
-    top_ind.collect()
-    #top_sizes are counts by subject. 
-    top_sizes = top_ind.countByValue().items()
-    #save cluster sizes
-    save_cluster_sizes(top_sizes,'cluster_sizes/cluster_sizes_subject'+str(subject)+'_'+str(top_cluster)+'.csv')
-    #save cluster centers
-    save_cluster_centers(top_model.centers,'cluster_centers/cluster_centers_subject'+str(subject)+'_'+str(top_cluster)+'.csv')
-    #copied from above for max point to center distance. 
-    cluster_point_distance = top_data.map(lambda point:error_by_center(point,top_model))
-    #no need to persist because its different for each top cluster
     max_point_distance = cluster_point_distance.reduceByKey(lambda x,y:max(x,y)).collect()
-    save_cluster_sizes(max_point_distance,'max_point_distance/'+str(subject)+'_'+str(top_cluster)+'.csv')
-    print 'finished top cluster',top_cluster
+    save_cluster_sizes(max_point_distance,'max_point_distance/'+str(subject)+'_.csv')
+    os.system('rm -rf max_point_distance/'+str(subject)+'_*.csv')
 
-    
+    sum_count_point_distance = cluster_point_distance.combineByKey(lambda value:(value,1.0),lambda x,value:(x[0]+value,x[1]+1), lambda x,y:(x[0]+y[0],x[1]+y[1]))
 
-#save as text file to clusterCenters in hdfs
-print 'save cluster center',time.time()-time_now
+    average_point_distance = sum_count_point_distance.map(lambda (num,(value_sum,count)):(num,value_sum/count)).collect()
+    save_cluster_sizes(average_point_distance,'average_point_distance/'+str(subject)+'_.csv')
+    '''
+    #Removed because duplicate to save_cluster_sizes
+    os.system('rm -rf max_point_distance'+str(subject)+'.dat')
+    with open('max_point_distance'+str(subject)+'.dat','w') as f:
+        f.write(str(max_point_distance))
+    '''
+    time_now = time.time()
 
-print 'wssse obtain time:',time.time()-time_old
-print("Within Set Sum of Squared Error = " + str(WSSSE))
+    #cluter centers after calculating kmeans clustering
+    #clusterCenters = sc.parallelize(clusters.clusterCenters)
+
+    #we dont need to clear hdfs system for now
+    #print 'clearing hdfs system'
+    #os.system('hdfs dfs -rm -r -f '+hdfsPrefix+'clusterCenters')
+    cluster_ind = parsedData.map(lambda point:clusters.predict(point))
+    cluster_ind.collect()
+    cluster_sizes = cluster_ind.countByValue().items()
+    #remove cluster size objects from cluster_sizes folder. 
+    os.system('rm -rf cluster_sizes/cluster_sizes_subject'+str(subject)+'_*.csv')
+    save_cluster_sizes(cluster_sizes,'cluster_sizes/cluster_sizes_subject'+str(subject)+'_.csv')
+    #remove cluster_centers objects from cluster_centers folder. before we rewrite them
+    os.system('rm -rf cluster_centers/cluster_centers_subject'+str(subject)+'_*.csv')
+    save_cluster_centers(clusters.centers,'cluster_centers/cluster_centers_subject'+str(subject)+'_.csv')
+
+    #get top clusters to split again
+    top_clusters = [item[0] for item in sorted(cluster_sizes,key=lambda x:x[1],reverse=True)[0:sub_num]]
+
+    #now we got the top 10 clusters. For each cluster, we will split 50 again. 
+    for top_cluster in top_clusters:
+        top_data = parsedData.filter(lambda point:clusters.predict(point)==top_cluster)
+
+        #now temp_data has all filtered by top_cluster. 
+        #Now we are going to cluster it. 
+        top_model = KMeans.train(top_data, sub_k, maxIterations=100,runs=10, initializationMode="k-means||")
+        #top_data_point_distance = top_data.map(lambda point:error_by_center(point,top_model))
+        #top_data_point_distance.persist()
+        
+        #top wsse
+        top_wsse = top_data.map(lambda point: error(point,top_model)).reduce(lambda x, y: x + y)
+        #group top data into different centers
+        top_ind = top_data.map(lambda point:top_model.predict(point))
+        top_ind.collect()
+        #top_sizes are counts by subject. 
+        top_sizes = top_ind.countByValue().items()
+        #save cluster sizes
+        save_cluster_sizes(top_sizes,'cluster_sizes/cluster_sizes_subject'+str(subject)+'_'+str(top_cluster)+'.csv')
+        #save cluster centers
+        save_cluster_centers(top_model.centers,'cluster_centers/cluster_centers_subject'+str(subject)+'_'+str(top_cluster)+'.csv')
+        #copied from above for max point to center distance. 
+        cluster_point_distance = top_data.map(lambda point:error_by_center(point,top_model))
+        #no need to persist because its different for each top cluster
+        max_point_distance = cluster_point_distance.reduceByKey(lambda x,y:max(x,y)).collect()
+        save_cluster_sizes(max_point_distance,'max_point_distance/'+str(subject)+'_'+str(top_cluster)+'.csv')
+        print 'finished top cluster',top_cluster
+
+        
+
+    #save as text file to clusterCenters in hdfs
+    print 'save cluster center',time.time()-time_now
+
+    print 'wssse obtain time:',time.time()-time_old
+    print("Within Set Sum of Squared Error = " + str(WSSSE))
+if __name__=='__main__':
+    if len(sys.argv)<2:
+        print 'invalid parameters'
+        print 'please append subject number'
+        sys.exit(1)
+    main(int(sys.argv[1]))

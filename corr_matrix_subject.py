@@ -1,3 +1,4 @@
+#running command: python corr_matrix_subject.py 0 cluster_centers/ max_point_distance/
 import numpy as np
 import sys,os,pandas,re
 import pandas as pd
@@ -8,6 +9,12 @@ from sklearn import metrics
 from plot_subject import read_subject_sizes as read_size
 from plot_subject import get_top_500_sizes as get_top
 import copy
+def save_matrix_png(data,filename):
+    plt.cla()
+    plt.matshow(data)
+    plt.colorbar()
+    plt.savefig(filename)
+
 def get_files(path,template):
     '''
         Args:
@@ -135,10 +142,12 @@ if __name__=='__main__':
         sys.exit(1)
     subject = sys.argv[1]
     path = sys.argv[2]
-    #print 'getting correlation matrix for subject',subject
+   
+   #print 'getting correlation matrix for subject',subject
     template = 'cluster_centers_subject'+str(subject)+'_.*csv'
     file_names = get_files(path,template)
     data = np.array(read_files_center(file_names))
+    
     #obtain 1000*1000 cluster
     top_list = get_top(read_size(subject = subject))
     top_list = list(top_list)
@@ -172,14 +181,9 @@ if __name__=='__main__':
             if r500_2[i][j]>1.48:
                 count3 += 1
     print subject,',',count1,',',count2,',',count3
-    plt.matshow(r500)
-    plt.colorbar()
-    plt.savefig('pluses'+str(subject)+'.png')
-
-    plt.cla()
-    plt.matshow(r500_2)
-    plt.colorbar()
-    plt.savefig('minuses'+str(subject)+'.png')
+    save_matrix_png(r500,'pluses'+str(subject)+'.png')
+    save_matrix_png(r500_2,'minuses'+str(subject)+'.png')
+    
     '''
     result = metrics.pairwise.pairwise_distances(data)
     result2 = copy.copy(result)
