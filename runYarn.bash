@@ -1,8 +1,8 @@
 #~/spark/bin/spark-submit --class "HitchCockProcess" --master "spark://wolf.iems.northwestern.edu:7077" target/TestCassandraMaven-0.0.1-SNAPSHOT-jar-with-dependencies.jar
 #/opt/cloudera/parcels/CDH/bin/spark-submit \
-if [ $# -eq 0 ]
+if [ $# -lt 2 ]
     then
-        echo "Usage: ./runYarn.bash jobName fileName"
+        echo "Usage: ./runYarn.bash fileName fileparameter"
         exit
 fi
 #if [ ! -f $1  ]; then
@@ -15,7 +15,7 @@ fi
 export HADOOP_CONF_DIR=/etc/alternatives/hadoop-conf 
 /opt/cloudera/parcels/CDH/bin/spark-submit \
 --deploy-mode client \
---name $1 \
+--name $2 \
 --executor-cores 4 \
 --executor-memory 6g \
-$2
+$1 $2
