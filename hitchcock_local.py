@@ -1,10 +1,3 @@
-# -*- coding: utf-8 -*-
-'''
-Created on Sun Nov 09 14:11:45 2014
-
-@author: liu
-'''
-
 from io_routines import readMat2
 #from db_utilities import prepareInsert,prepareCreateTable,getSession
 import numpy as np
@@ -32,9 +25,9 @@ def norm_nodevide(x):
         return x
     for s in x:
         result.append((s-mean)/d)
-    
+
     return result
-    
+
 def dft_y(x):
     '''
     Args:
@@ -60,7 +53,7 @@ def subject_worker(f,data,subject,d,lock=None):
         normalized DFT output for subjects. 
     '''
     print 'dft_worker for',subject,'started',time.time()
-    
+
     #new file begins, commenting out because we will not use it
     #newfile = open(file_name,'a')
     data2 = np.array(f[data[subject][0]])
@@ -85,7 +78,7 @@ def subject_worker(f,data,subject,d,lock=None):
     for z in xrange(len(data2[0][0][0])):
         for y in xrange(len(data2[0][0])):
             for x in xrange(len(data2[0])):
-                
+
                 xyz_key = str(x)+'_'+str(y)+'_'+str(z)
                 if xyz_key not in d.keys():
                     #TODO: there might be problem here. It might need manager
@@ -97,7 +90,7 @@ def subject_worker(f,data,subject,d,lock=None):
                 d[xyz_key][subject] = timeSeries
                 #comment out the dft transform code as we will not use it
                 #timeSeries = dft_y(timeSeries)
-                
+
                 #comment out the line code as we will not be writing to subject file directly
                 #line = ';'.join([str(x),str(y),str(z),','.join([str(item) for item in timeSeries])])
                 #newfile.write(line+'\n')
@@ -165,7 +158,7 @@ def main():
     #so now assume all threads finished running:
     #we have a dictionary of the described one
     #now we need to normalize it based on person
-    result_dict = normalize_columns(result_dict)
+    #result_dict = normalize_columns(result_dict)
     print("--- total run time: %s seconds ---" % str(time.time() - start_time))
     f = open('result.dat','w')
     for key in result_dict.keys():
@@ -173,7 +166,7 @@ def main():
         f.write(';')
         for subject in sorted(result_dict[key].keys()):
             f.write(','.join(map(str,result_dict[key][subject])))
-    
+
             f.write(',')
         f.write('\n')
     f.close()
