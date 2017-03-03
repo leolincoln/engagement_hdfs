@@ -86,7 +86,7 @@ def subject_worker(f,data,subject,d,lock=None):
                 #now the lock is released, and we should have xyz_key in our global d dictionary
                 timeSeries = [data2[t][x][y][z] for t in xrange(len(data2))]
                 timeSeries = np.array(timeSeries).astype(float)
-                timeSeries = norm_nodevide(timeSeries)
+                #timeSeries = norm_nodevide(timeSeries)
                 d[xyz_key][subject] = timeSeries
                 #comment out the dft transform code as we will not use it
                 #timeSeries = dft_y(timeSeries)

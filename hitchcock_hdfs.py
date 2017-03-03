@@ -60,7 +60,7 @@ def dft_worker(f,data,subject,file_name):
         normalized DFT output for subjects. 
     '''
     print 'dft_worker for',subject,'started',time.time()
-    #newfile = open(file_name,'a')
+    newfile = open(file_name,'a')
     data2 = np.array(f[data[subject][0]])
     start_time2 = time.time();
     '''
@@ -75,19 +75,26 @@ def dft_worker(f,data,subject,file_name):
     22 subjects for hitchcockdatao
 
     '''
-
+    '''
     for z in xrange(len(data2[0][0][0])):
         for y in xrange(len(data2[0][0])):
             for x in xrange(len(data2[0])):
+
+    '''
+    for z in range(21,24):
+        for y in range(18,21):
+            for x in range(25,27):
                 timeSeries = [data2[t][x][y][z] for t in xrange(len(data2))]
                 timeSeries = np.array(timeSeries).astype(float)
-                timeSeries = norm_nodevide(timeSeries)
-                if timeSeries is None:
-                    continue
+
+                #timeSeries = norm_nodevide(timeSeries)
+                #if timeSeries is None:
+                #    continue
                 #timeSeries = dft_y(timeSeries)
+                line = ','.join([str(x),str(y),str(z),str(subject),','.join([str(item) for item in timeSeries])])
                 #line = ';'.join([str(x),str(y),str(z),str(subject),','.join([str(item) for item in timeSeries])])
-                #newfile.write(line+'\n')
-    #newfile.close()
+                newfile.write(line+'\n')
+    newfile.close()
     print("--- run time for subject: %s seconds ---" % str(time.time() - start_time2))
 
 
@@ -98,9 +105,9 @@ def main():
     for fileName in fileNames:
         f,data = readMat2(fileName)
     threads = []
-
-    for subject in xrange(len(data)):
-        newfileName = fileName[:-4]+str(subject)+'.dat'
+    #for subject in xrange(len(data)):
+    for subject in [0]:
+        newfileName = fileName[:-4]+str(subject)+'raw.dat'
         t = threading.Thread(target=dft_worker, args=(f,data,subject,newfileName))
         threads.append(t)
         t.start()

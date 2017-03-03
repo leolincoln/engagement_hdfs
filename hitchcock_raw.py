@@ -1,10 +1,8 @@
-# -*- coding: utf-8 -*-
-'''
-Created on Sun Nov 09 14:11:45 2014
-Sample creator for hitch cock data. 
+#this file is for getting all raw data from mat file. 
+#using threading, not multiprocess
+#outputs: HitchcockData0raw.csv HitchcockData1raw.csv etc
 
-@author: liu
-'''
+
 from io_routines import readMat2
 #from db_utilities import prepareInsert,prepareCreateTable,getSession
 import numpy as np
@@ -26,13 +24,21 @@ def norm_nodevide(x):
     for s in x:
         d+=(s-mean)**2
     d = d**0.5
+    for item in x:
+        if float(item) < 0:
+            print 'negative value!'
+            print item
+
     if d==0:
-        print('Encountered 0 nominator on series')
-        return x
-    for s in x:
-        result.append((s-mean)/d)
+        #print 'Encountered 0 nominator on series'
+        return None
+    return None
+    #ucomment here
+
+    #for s in x:
+    #    result.append((s-mean)/d)
     
-    return result
+    #return result
     
 def dft_y(x):
     '''
@@ -58,7 +64,7 @@ def dft_worker(f,data,subject,file_name):
     File: 
         normalized DFT output for subjects. 
     '''
-    print('dft_worker for',subject,'started',time.time())
+    print 'dft_worker for',subject,'started',time.time()
     newfile = open(file_name,'a')
     data2 = np.array(f[data[subject][0]])
     start_time2 = time.time();
@@ -74,18 +80,21 @@ def dft_worker(f,data,subject,file_name):
     22 subjects for hitchcockdatao
 
     '''
-    z_len = len(data2[0][0][0])
-    y_len = len(data2[0][0])
-    x_len = len(data2[0])
-    for z in range(10,30):
-        for y in range(10,30):
-            for x in range(10,30):
+
+    for z in xrange(len(data2[0][0][0])):
+        for y in xrange(len(data2[0][0])):
+            for x in xrange(len(data2[0])):
                 timeSeries = [data2[t][x][y][z] for t in xrange(len(data2))]
                 timeSeries = np.array(timeSeries).astype(float)
-                #timeSeries = norm_nodevide(timeSeries)
                 #timeSeries = dft_y(timeSeries)
-                line = ','.join([str(x),str(y),str(z),str(subject)]+[str(item) for item in timeSeries])
-                newfile.write(line+'\n')
+                for ind in xrange(len(timeSeries)):
+                    xyzKey = str(x)+'|'+str(y)+'|'+str(z)
+                    timeKey = str(ind)
+                    subjectKey = str(subject)
+                    data = str(timeSeries[ind])
+                    line=','.join([xyzKey,timeKey,subjectKey,data])
+                    #line = ','.join([str(x),str(y),str(z),str(subject),','.join([str(item) for item in timeSeries])])
+                    newfile.write(line+'\n')
     newfile.close()
     print("--- run time for subject: %s seconds ---" % str(time.time() - start_time2))
 
@@ -95,18 +104,14 @@ def main():
 
     fileNames = ['HitchcockData.mat']
     for fileName in fileNames:
-        try:
-            f,data = readMat2(fileName)
-        except:
-            sys.exit('not found file '+fileName+':  exiting')
+        f,data = readMat2(fileName)
     threads = []
 
     for subject in xrange(len(data)):
-        newfileName = fileName[:-4]+str(subject)+'sample.csv'
+        newfileName = fileName[:-4]+str(subject)+'raw.csv'
         t = threading.Thread(target=dft_worker, args=(f,data,subject,newfileName))
         threads.append(t)
         t.start()
-        break
     print("--- total run time: %s seconds ---" % str(time.time() - start_time))
 
 
